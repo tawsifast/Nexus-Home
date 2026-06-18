@@ -15,20 +15,21 @@ import {
 } from "@heroui/react";
 import { Edit2, Trash2, Home } from "lucide-react";
 import toast from "react-hot-toast";
+import { updatedProperty } from "@/lib/actions/property";
+
 
 export default function PropertiesTable({ properties: initialProperties }) {
   const [properties, setProperties] = useState(initialProperties);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState(null);
 
+  // Helper function to extract ID easily
+  const getItemId = (item) => item?._id?.$oid || item?._id || item?.id;
+
   // ডিলিট হ্যান্ডলার
   const handleDelete = async (id) => {
     if (confirm("Are you sure you want to delete this property?")) {
-      setProperties(
-        properties.filter(
-          (item) => (item._id?.$oid || item._id || item.id) !== id,
-        ),
-      );
+      setProperties(properties.filter((item) => getItemId(item) !== id));
       toast.success("Property deleted successfully!");
     }
   };
@@ -40,18 +41,19 @@ export default function PropertiesTable({ properties: initialProperties }) {
   };
 
   // আপডেট ফর্ম সাবমিট হ্যান্ডলার
-  const handleUpdateSubmit = (e) => {
+  const handleUpdateSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const rawData = Object.fromEntries(formData.entries());
+    
+    const propertyId = getItemId(selectedProperty);
 
-    const imageInput = rawData.imageUrls ? rawData.imageUrls.trim() : "";
-    const processedImages = imageInput.includes(",")
-      ? imageInput.split(",").map((url) => url.trim())
-      : imageInput;
+    // ইমেজ ইউআরএল গুলোকে কমা দিয়ে স্প্লিট করে অ্যারেতে কনভার্ট করা হয়েছে
+    // const processedImages = 
+    //   ? rawData.imageUrls.split(",").map((url) => url.trim()).filter(Boolean)
+    //   : [];
 
     const updatedData = {
-      ...selectedProperty,
       title: rawData.title,
       description: rawData.description,
       location: rawData.location,
@@ -62,26 +64,35 @@ export default function PropertiesTable({ properties: initialProperties }) {
       bathrooms: Number(rawData.bathrooms),
       propertySize: rawData.propertySize,
       amenities: rawData.amenities
-        ? rawData.amenities.split(",").map((item) => item.trim())
+        ? rawData.amenities.split(",").map((item) => item.trim()).filter(Boolean)
         : [],
-      images: processedImages,
+      images: rawData.imageUrls, // ফিক্সড ইমেজ ডাটা স্ট্রাকচার
       extraFeatures: rawData.extraFeatures,
     };
 
-    setProperties(
-      properties.map((item) =>
-        (item._id?.$oid || item._id || item.id) ===
-        (selectedProperty._id?.$oid ||
-          selectedProperty._id ||
-          selectedProperty.id)
-          ? updatedData
-          : item,
-      ),
-    );
+    try {
+      // API CALL
+      const res = await updatedProperty(propertyId, updatedData);
 
-    console.log("Updated Data for MongoDB:", updatedData);
-    toast.success("Property updated successfully!");
-    setIsOpen(false);
+      if (!res?.acknowledged && !res?.success) {
+        toast.error("Update failed!");
+        return;
+      }
+
+      // UI STATE UPDATE (সহজ আইডি ম্যাচিং লজিক দিয়ে ফিক্সড)
+      setProperties(
+        properties.map((item) =>
+          getItemId(item) === propertyId ? updatedData : item
+        )
+      );
+
+      toast.success("Property updated successfully!");
+      setIsOpen(false);
+      setSelectedProperty(null);
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong!");
+    }
   };
 
   const getStatusStyle = (status) => {
@@ -105,8 +116,7 @@ export default function PropertiesTable({ properties: initialProperties }) {
 
   return (
     <>
-      {/* 1. প্রোপার্টি টেবিল (অ্যাড করা হয়েছে নির্দিষ্ট aria-label) */}
-      <Table aria-label="Properties List Table">
+      <Table aria-label="Properties List Table" >
         <Table.ScrollContainer>
           <Table.Content
             className="min-w-[700px]"
@@ -122,9 +132,13 @@ export default function PropertiesTable({ properties: initialProperties }) {
             </Table.Header>
             <Table.Body>
               {properties.map((item) => {
-                const itemId = item._id?.$oid || item._id || item.id;
+                const itemId = getItemId(item);
                 return (
-                  <Table.Row key={itemId}>
+                  // hover ইফেক্ট বন্ধ করার জন্য টেইলউইন্ড ক্লাস যুক্ত করা হয়েছে
+                  <Table.Row 
+                    key={itemId}
+                    className="hover:bg-transparent data-[hovered=true]:bg-transparent transition-none"
+                  >
                     <Table.Cell className="font-medium text-slate-200">
                       {item.title}
                     </Table.Cell>
@@ -147,7 +161,6 @@ export default function PropertiesTable({ properties: initialProperties }) {
                     </Table.Cell>
                     <Table.Cell>
                       <div className="flex items-center justify-end gap-2">
-                        {/* বাটন স্ট্রাকচার ঠিক করা হয়েছে প্রেস রেসপন্ডার ফিক্স করার জন্য */}
                         <Button
                           size="sm"
                           variant="outline"
@@ -174,7 +187,7 @@ export default function PropertiesTable({ properties: initialProperties }) {
         </Table.ScrollContainer>
       </Table>
 
-      {/* 2. আপডেট মোডাল */}
+      {/* আপডেট মোডাল */}
       <Modal isOpen={isOpen} onOpenChange={setIsOpen}>
         <Modal.Backdrop>
           <Modal.Container placement="auto">
@@ -251,17 +264,11 @@ export default function PropertiesTable({ properties: initialProperties }) {
                           </Select.Trigger>
                           <Select.Popover>
                             <ListBox>
-                              <ListBox.Item
-                                id="Apartment"
-                                textValue="Apartment"
-                              >
+                              <ListBox.Item id="Apartment" textValue="Apartment">
                                 Apartment
                                 <ListBox.ItemIndicator />
                               </ListBox.Item>
-                              <ListBox.Item
-                                id="Duplex"
-                                textValue="Duplex Villa"
-                              >
+                              <ListBox.Item id="Duplex" textValue="Duplex Villa">
                                 Duplex Villa
                                 <ListBox.ItemIndicator />
                               </ListBox.Item>
@@ -269,10 +276,7 @@ export default function PropertiesTable({ properties: initialProperties }) {
                                 Studio Flat
                                 <ListBox.ItemIndicator />
                               </ListBox.Item>
-                              <ListBox.Item
-                                id="Commercial"
-                                textValue="Commercial Space"
-                              >
+                              <ListBox.Item id="Commercial" textValue="Commercial Space">
                                 Commercial Space
                                 <ListBox.ItemIndicator />
                               </ListBox.Item>
@@ -347,9 +351,7 @@ export default function PropertiesTable({ properties: initialProperties }) {
                         <Input min={0} />
                         <FieldError />
                       </TextField>
-                    </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <TextField
                         isRequired
                         name="propertySize"
