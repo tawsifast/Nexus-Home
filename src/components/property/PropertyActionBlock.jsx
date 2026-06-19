@@ -15,6 +15,7 @@ import {
 import { Modal, Button, TextField, Label, Input } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { addFavorite } from "@/lib/actions/favourite";
+import { createBooking, createStripeSession } from "@/lib/api/booking";
 
 export default function PropertyActionBlock({ property, user }) {
   const router = useRouter();
@@ -31,17 +32,17 @@ export default function PropertyActionBlock({ property, user }) {
   const handleAddToFavorite = async () => {
     setLoadingFav(true);
     try {
-        const favoriteData = {
+      const favoriteData = {
         propertyId: property._id,
         title: property.title,
         type: property.propertyType,
         location: property.location,
-        bathroom:property.bathrooms,
-        bedroom:property.bedrooms,
+        bathroom: property.bathrooms,
+        bedroom: property.bedrooms,
         rentPrice: property.price,
-        userEmail: user?.email
+        userEmail: user?.email,
       };
-      const res = await addFavorite(favoriteData)
+      const res = await addFavorite(favoriteData);
       setIsFavorite(!isFavorite);
     } catch (error) {
       console.error(error);
@@ -63,35 +64,32 @@ export default function PropertyActionBlock({ property, user }) {
       const bookingData = {
         propertyId: property._id,
         title: property.title,
-        image: property.image,
         location: property.location,
         price: property.price,
         moveInDate,
         contactNumber,
+        userEmail: user?.email,
+        userName: user?.name,
         additionalNotes: notes,
-        status: "Pending", // পেমেন্ট না হওয়া পর্যন্ত পেন্ডিং থাকবে
         bookedAt: new Date().toISOString(),
       };
-
-      // মঙ্গোডিবি-তে ডেটা সেভ করার জন্য এক্সপ্রেস এপিআই রুট হিট করতে পারেন (যেমন: /api/bookings)
-      console.log(
-        "Saving to MongoDB -> Showing in My Bookings Route Later:",
-        bookingData,
-      );
+      console.log("Saving to MongoDB ,bookingData",bookingData);
+      const saveBooking = await createBooking(bookingData);
 
       // লোকাল স্টোরেজে ব্যাকআপ সেভ করে টেস্ট করার সুবিধার্থে (পরবর্তীতে রিয়েল এপিআই দিয়ে রিপ্লেস করবেন)
-      const existingBookings = JSON.parse(
-        localStorage.getItem("myBookings") || "[]",
-      );
-      localStorage.setItem(
-        "myBookings",
-        JSON.stringify([...existingBookings, bookingData]),
-      );
+      sessionStorage.setItem("pendingBooking", JSON.stringify(bookingData));
 
-      // বুকিং সফল হলে সরাসরি পেমেন্ট গেটওয়েতে পাঠিয়ে দেওয়া
-      router.push(
-        `/all-client/payment?propertyId=${property._id}&amount=${property.price}`,
-      );
+      const session = await createStripeSession({
+      amount: property.price,
+      propertyId: property._id,
+      email: user.email,
+    });
+
+    // 4️⃣ Redirect to Stripe payment page
+    if (session.url) {
+      window.location.href = session.url;
+    }
+
     } catch (error) {
       console.error(error);
     } finally {
@@ -108,7 +106,7 @@ export default function PropertyActionBlock({ property, user }) {
         </p>
         <div className="text-3xl font-black text-white flex items-baseline gap-1">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400">
-            ৳{property.price?.toLocaleString("en-BD")}
+            ${property.price?.toLocaleString("en-BD")}
           </span>
           <span className="text-xs text-slate-400 font-normal">
             /{property.rentType === "Daily" ? "day" : "month"}
