@@ -1,8 +1,8 @@
 import { serverFetch } from "../core/server"
 
 
-export const getProperty = async() =>{
-    return serverFetch("/properties")
+export const getProperty = async(query) =>{
+    return serverFetch(`/properties?${query.toString()}`)
 };
 
 export const getPropertyById = async(propertyId) =>{

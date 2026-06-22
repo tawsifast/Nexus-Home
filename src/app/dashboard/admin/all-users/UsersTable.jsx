@@ -89,7 +89,7 @@ export default function UsersTable({ initialUsers }) {
             <Table.Body>
               {users.map((user) => {
                 const targetId = user._id?.$oid || user._id || user.id;
-                const activeRole = user.role || "Tenant";
+                const activeRole = user.role || "tenant";
 
                 return (
                   <Table.Row
@@ -107,7 +107,7 @@ export default function UsersTable({ initialUsers }) {
                     <Table.Cell className="py-4 px-4">
                       <span
                         className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${
-                          activeRole === "Admin"
+                          activeRole === "admin"
                             ? "bg-purple-500/10 text-purple-400 border-purple-500/20"
                             : activeRole === "Owner"
                             ? "bg-cyan-500/10 text-cyan-400 border-cyan-500/20"
@@ -124,7 +124,7 @@ export default function UsersTable({ initialUsers }) {
                         <Button
                           size="sm"
                           variant="flat"
-                          onPress={() => initiateRoleChange(targetId, user.name, activeRole, "Tenant")}
+                          onPress={() => initiateRoleChange(targetId, user.name, activeRole, "tenant")}
                           className={`px-3 h-8 text-xs font-medium rounded-lg cursor-pointer border flex items-center gap-1 transition-all ${
                             activeRole === "Tenant"
                               ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20 shadow-[0_0_12px_rgba(16,185,129,0.05)]"
@@ -139,7 +139,7 @@ export default function UsersTable({ initialUsers }) {
                         <Button
                           size="sm"
                           variant="flat"
-                          onPress={() => initiateRoleChange(targetId, user.name, activeRole, "Owner")}
+                          onPress={() => initiateRoleChange(targetId, user.name, activeRole, "owner")}
                           className={`px-3 h-8 text-xs font-medium rounded-lg cursor-pointer border flex items-center gap-1 transition-all ${
                             activeRole === "Owner"
                               ? "bg-cyan-500/10 text-cyan-400 border-cyan-500/20 shadow-[0_0_12px_rgba(6,182,212,0.05)]"
@@ -154,7 +154,7 @@ export default function UsersTable({ initialUsers }) {
                         <Button
                           size="sm"
                           variant="flat"
-                          onPress={() => initiateRoleChange(targetId, user.name, activeRole, "Admin")}
+                          onPress={() => initiateRoleChange(targetId, user.name, activeRole, "admin")}
                           className={`px-3 h-8 text-xs font-medium rounded-lg cursor-pointer border flex items-center gap-1 transition-all ${
                             activeRole === "Admin"
                               ? "bg-purple-500/10 text-purple-400 border-purple-500/20 shadow-[0_0_12px_rgba(168,85,247,0.05)]"

@@ -62,7 +62,7 @@ export async function DashboardSidebar() {
     admin : adminNavItems,
   }
 
-  const navItems = navLinksMap[user?.role || "tenant"]
+  const navItems = navLinksMap[user?.role?.toLowerCase() || "tenant"]
   const navContent = (
     <nav className="flex flex-col gap-1">
       {navItems.map((item) => (
