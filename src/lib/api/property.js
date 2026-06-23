@@ -10,6 +10,10 @@ export const getAllProperty = async() =>{
     return protectedFetch(`/allProperties`)
 };
 
+export const getFeaturedProperty = async() =>{
+    return serverFetch(`/featuredProperty`)
+};
+
 export const getPropertyById = async(propertyId) =>{
     return protectedFetch(`/properties/${propertyId}`)
 }
