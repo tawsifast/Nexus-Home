@@ -1,13 +1,21 @@
-import { getPropertyById } from "@/lib/api/property";
 import PropertyActionBlock from "@/components/property/PropertyActionBlock";
+import PropertyReviews from "@/components/PropertyReviews";
+import { getAllBookings, getBookingByBuyer } from "@/lib/api/booking";
+import { getPropertyById } from "@/lib/api/property";
+import { getPropertyReviews } from "@/lib/api/review";
+import { getUserSession } from "@/lib/core/session";
 import { MapPin, ArrowLeft, ShieldCheck, Sparkles, Building } from "lucide-react";
 import Link from "next/link";
-import { getUserSession } from "@/lib/core/session";
+
 
 export default async function PropertyDetailsPage({ params }) {
   const { id } = await params;
-  const property = await getPropertyById(id);
   const user = await getUserSession();
+  const property = await getPropertyById(id);
+  const initialReviews = await getPropertyReviews(id);
+  const allBookings = user?.role?.toLowerCase() === "tenant" && user?.email
+  ? await getBookingByBuyer(user.email)
+  : [];
 
   if (!property) {
     return (
@@ -21,6 +29,8 @@ export default async function PropertyDetailsPage({ params }) {
       </div>
     );
   }
+
+  // যদি আপনার প্রোপার্টি অবজেক্টে আগে থেকে কোনো রিভিউ এপিআই ডেটা থাকে, তা পাস করুন
 
   return (
     <main className="min-h-screen bg-[#0d111a] text-slate-100 pt-28 pb-20 px-4 md:px-8 relative overflow-hidden">
@@ -61,7 +71,7 @@ export default async function PropertyDetailsPage({ params }) {
             {/* Cinematic Image Showcase */}
             <div className="relative rounded-3xl overflow-hidden h-[300px] md:h-[500px] border border-white/[0.08] shadow-[0_20px_50px_rgba(0,0,0,0.3)] group bg-slate-900">
               <img 
-                src={property.image || "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=600&auto=format&fit=crop"} 
+                src={property.images || "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=600&auto=format&fit=crop"} 
                 alt={property.title} 
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-102"
               />
@@ -88,7 +98,7 @@ export default async function PropertyDetailsPage({ params }) {
                 </div>
                 <div className="backdrop-blur-xl bg-white/[0.01] border border-white/[0.05] p-5 rounded-2xl transition-all hover:bg-white/[0.02] hover:border-white/[0.08]">
                   <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-1">Square Feet</p>
-                  <p className="text-2xl font-black text-cyan-400">{property.area ? `${property.area}` : "N/A"}</p>
+                  <p className="text-2xl font-black text-cyan-400">{property.propertySize ? `${property.propertySize}` : "N/A"}</p>
                 </div>
               </div>
             </div>
@@ -99,9 +109,18 @@ export default async function PropertyDetailsPage({ params }) {
                 <Building size={16} className="text-purple-400" /> About This Residence
               </h3>
               <p className="text-slate-400 text-sm leading-relaxed font-light">
-                Experience refined living in this spectacular property situated at {property.location}. Engineered with modern infrastructure, optimal sunlight integration, and ultra-high-speed connectivity compatibility. This space offers a unique blend of privacy, sophistication, and community accessibility.
+                {property.description || `Experience refined living in this spectacular property situated at ${property.location}. Engineered with modern infrastructure.`}
               </p>
             </div>
+
+            {/* ২. রিভিউ সেকশন এখানে রেন্ডার করা হলো */}
+            <PropertyReviews 
+              initialReviews={initialReviews}
+              propertyId={id} 
+              allBookings={allBookings}
+              user={user} 
+            />
+
           </div>
 
           {/* Right Column: Sticky Pricing & Interactive Actions (1/3 Width) */}

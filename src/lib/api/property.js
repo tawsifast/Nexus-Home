@@ -15,7 +15,7 @@ export const getFeaturedProperty = async() =>{
 };
 
 export const getPropertyById = async(propertyId) =>{
-    return protectedFetch(`/properties/${propertyId}`)
+    return serverFetch(`/properties/${propertyId}`)
 }
 
 export const getPropertyByOwnerId = async (ownerId) => {
