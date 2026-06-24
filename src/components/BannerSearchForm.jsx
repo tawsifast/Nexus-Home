@@ -9,13 +9,11 @@ import { Search, MapPin, Home, DollarSign } from "lucide-react";
 export default function BannerSearchForm({ propertyTypes }) {
   const router = useRouter();
 
-  // ১. সকল ইনপুটের জন্য স্টেট ডিক্লেয়ারেশন
   const [location, setLocation] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
 
-  // ২. সার্চ সাবমিট হ্যান্ডলার (URL কুয়েরি প্যারামিটার তৈরি)
   const handleSearch = () => {
     const params = new URLSearchParams();
 
@@ -24,7 +22,6 @@ export default function BannerSearchForm({ propertyTypes }) {
     if (minPrice) params.set("minPrice", minPrice);
     if (maxPrice) params.set("maxPrice", maxPrice);
 
-    // প্রথম পেজ থেকে সার্চ রেজাল্ট শুরু হবে
     params.set("page", "1");
 
     router.push(`/all-client/all-properties?${params.toString()}`);
@@ -136,7 +133,7 @@ export default function BannerSearchForm({ propertyTypes }) {
       {/* Search Trigger Button */}
       <Button
         onClick={handleSearch}
-        className="w-full h-10 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] transition-all duration-300 h-10"
+        className="w-full h-10 bg-linear-to-r from-cyan-500 to-purple-600 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] transition-all duration-300"
         startContent={<Search size={18} />}
       >
         Search
