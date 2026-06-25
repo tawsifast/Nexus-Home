@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Table, Button, AlertDialog } from "@heroui/react";
+import { Button, AlertDialog } from "@heroui/react";
 import { ShieldAlert, User, Building, AlertTriangle } from "lucide-react";
 import toast from "react-hot-toast";
 import { updateUsersRole } from "@/lib/actions/user";
@@ -16,7 +16,7 @@ export default function UsersTable({ initialUsers }) {
   // Triggered when a quick action node button is pressed
   const initiateRoleChange = (userId, userName, currentRole, newRole) => {
     // If clicking the role they already have, bypass entirely
-    if (currentRole === newRole) return;
+    if (currentRole.toLowerCase() === newRole.toLowerCase()) return;
 
     setPendingAction({
       userId,
@@ -63,118 +63,117 @@ export default function UsersTable({ initialUsers }) {
         </p>
       </div>
 
-      <Table aria-label="Global User Management Ledger">
-        <Table.ScrollContainer>
-          <Table.Content
-            aria-label="User Data List Map"
-            className="min-w-[750px]"
-          >
-            <Table.Header>
-              <Table.Column
-                isRowHeader
-                className="bg-white/2 text-slate-400 font-semibold text-xs py-4 px-6 border-b border-white/5"
-              >
+      {/* 🛠️ স্ট্যান্ডার্ড এইচটিএমএল টেবিল উইথ রেসপন্সিভ স্ক্রোল র‍্যাপার */}
+      <div className="w-full overflow-x-auto">
+        <table className="w-full text-left border-collapse min-w-[750px]">
+          <thead>
+            <tr className="border-b border-white/5 bg-white/[0.01]">
+              <th className="text-slate-400 font-semibold text-xs py-4 px-6">
                 Name
-              </Table.Column>
-              <Table.Column className="bg-white/2 text-slate-400 font-semibold text-xs py-4 px-4 border-b border-white/5">
+              </th>
+              <th className="text-slate-400 font-semibold text-xs py-4 px-4">
                 Email
-              </Table.Column>
-              <Table.Column className="bg-white/2 text-slate-400 font-semibold text-xs py-4 px-4 border-b border-white/5">
+              </th>
+              <th className="text-slate-400 font-semibold text-xs py-4 px-4">
                 Current Status Badge
-              </Table.Column>
-              <Table.Column className="bg-white/2 text-slate-400 font-semibold text-xs py-4 px-6 text-right border-b border-white/5">
+              </th>
+              <th className="text-slate-400 font-semibold text-xs py-4 px-6 text-right">
                 Quick Role Action Node
-              </Table.Column>
-            </Table.Header>
-            <Table.Body>
-              {users.map((user) => {
-                const targetId = user._id?.$oid || user._id || user.id;
-                const activeRole = user.role || "tenant";
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user) => {
+              const targetId = user._id?.$oid || user._id || user.id;
+              const activeRole = user.role || "tenant";
 
-                return (
-                  <Table.Row
-                    key={targetId}
-                    className="border-b border-white/2 hover:bg-white/1 transition-colors"
-                  >
-                    <Table.Cell className="py-4 px-6 text-slate-200 font-medium text-sm">
-                      {user.name || "Unknown User"}
-                    </Table.Cell>
+              return (
+                <tr
+                  key={targetId}
+                  className="border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors"
+                >
+                  {/* Name */}
+                  <td className="py-4 px-6 text-slate-200 font-medium text-sm">
+                    {user.name || "Unknown User"}
+                  </td>
 
-                    <Table.Cell className="py-4 px-4 text-slate-400 font-mono text-xs tracking-tight">
-                      {user.email}
-                    </Table.Cell>
+                  {/* Email */}
+                  <td className="py-4 px-4 text-slate-400 font-mono text-xs tracking-tight">
+                    {user.email}
+                  </td>
 
-                    <Table.Cell className="py-4 px-4">
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${
-                          activeRole === "admin"
-                            ? "bg-purple-500/10 text-purple-400 border-purple-500/20"
-                            : activeRole === "Owner"
-                            ? "bg-cyan-500/10 text-cyan-400 border-cyan-500/20"
-                            : "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                  {/* Current Status Badge */}
+                  <td className="py-4 px-4">
+                    <span
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${
+                        activeRole.toLowerCase() === "admin"
+                          ? "bg-purple-500/10 text-purple-400 border-purple-500/20"
+                          : activeRole.toLowerCase() === "owner"
+                          ? "bg-cyan-500/10 text-cyan-400 border-cyan-500/20"
+                          : "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                      }`}
+                    >
+                      {activeRole}
+                    </span>
+                  </td>
+
+                  {/* Quick Role Action Node */}
+                  <td className="py-4 px-6 text-right">
+                    <div className="flex items-center justify-end gap-1.5">
+                      {/* Tenant Trigger Button */}
+                      <Button
+                        size="sm"
+                        variant="flat"
+                        onPress={() => initiateRoleChange(targetId, user.name, activeRole, "tenant")}
+                        className={`px-3 h-8 text-xs font-medium rounded-lg cursor-pointer border flex items-center gap-1 transition-all ${
+                          activeRole.toLowerCase() === "tenant"
+                            ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20 shadow-[0_0_12px_rgba(16,185,129,0.05)]"
+                            : "bg-white/2 text-slate-400 border-transparent hover:bg-white/5 hover:text-slate-300"
                         }`}
                       >
-                        {activeRole}
-                      </span>
-                    </Table.Cell>
+                        <User className="size-3 shrink-0" />
+                        Tenant
+                      </Button>
 
-                    <Table.Cell className="py-4 px-6 text-right">
-                      <div className="flex items-center justify-end gap-1">
-                        {/* Tenant Trigger Button */}
-                        <Button
-                          size="sm"
-                          variant="flat"
-                          onPress={() => initiateRoleChange(targetId, user.name, activeRole, "tenant")}
-                          className={`px-3 h-8 text-xs font-medium rounded-lg cursor-pointer border flex items-center gap-1 transition-all ${
-                            activeRole === "Tenant"
-                              ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20 shadow-[0_0_12px_rgba(16,185,129,0.05)]"
-                              : "bg-white/2 text-slate-400 border-transparent hover:bg-white/5 hover:text-slate-300"
-                          }`}
-                        >
-                          <User className="size-3 shrink-0" />
-                          Tenant
-                        </Button>
+                      {/* Owner Trigger Button */}
+                      <Button
+                        size="sm"
+                        variant="flat"
+                        onPress={() => initiateRoleChange(targetId, user.name, activeRole, "owner")}
+                        className={`px-3 h-8 text-xs font-medium rounded-lg cursor-pointer border flex items-center gap-1 transition-all ${
+                          activeRole.toLowerCase() === "owner"
+                            ? "bg-cyan-500/10 text-cyan-400 border-cyan-500/20 shadow-[0_0_12px_rgba(6,182,212,0.05)]"
+                            : "bg-white/2 text-slate-400 border-transparent hover:bg-white/5 hover:text-slate-300"
+                        }`}
+                      >
+                        <Building className="size-3 shrink-0" />
+                        Owner
+                      </Button>
 
-                        {/* Owner Trigger Button */}
-                        <Button
-                          size="sm"
-                          variant="flat"
-                          onPress={() => initiateRoleChange(targetId, user.name, activeRole, "owner")}
-                          className={`px-3 h-8 text-xs font-medium rounded-lg cursor-pointer border flex items-center gap-1 transition-all ${
-                            activeRole === "Owner"
-                              ? "bg-cyan-500/10 text-cyan-400 border-cyan-500/20 shadow-[0_0_12px_rgba(6,182,212,0.05)]"
-                              : "bg-white/2 text-slate-400 border-transparent hover:bg-white/5 hover:text-slate-300"
-                          }`}
-                        >
-                          <Building className="size-3 shrink-0" />
-                          Owner
-                        </Button>
+                      {/* Admin Trigger Button */}
+                      <Button
+                        size="sm"
+                        variant="flat"
+                        onPress={() => initiateRoleChange(targetId, user.name, activeRole, "admin")}
+                        className={`px-3 h-8 text-xs font-medium rounded-lg cursor-pointer border flex items-center gap-1 transition-all ${
+                          activeRole.toLowerCase() === "admin"
+                            ? "bg-purple-500/10 text-purple-400 border-purple-500/20 shadow-[0_0_12px_rgba(168,85,247,0.05)]"
+                            : "bg-white/2 text-slate-400 border-transparent hover:bg-white/5 hover:text-slate-300"
+                        }`}
+                      >
+                        <ShieldAlert className="size-3 shrink-0" />
+                        Admin
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
 
-                        {/* Admin Trigger Button */}
-                        <Button
-                          size="sm"
-                          variant="flat"
-                          onPress={() => initiateRoleChange(targetId, user.name, activeRole, "admin")}
-                          className={`px-3 h-8 text-xs font-medium rounded-lg cursor-pointer border flex items-center gap-1 transition-all ${
-                            activeRole === "Admin"
-                              ? "bg-purple-500/10 text-purple-400 border-purple-500/20 shadow-[0_0_12px_rgba(168,85,247,0.05)]"
-                              : "bg-white/2 text-slate-400 border-transparent hover:bg-white/5 hover:text-slate-300"
-                          }`}
-                        >
-                          <ShieldAlert className="size-3 shrink-0" />
-                          Admin
-                        </Button>
-                      </div>
-                    </Table.Cell>
-                  </Table.Row>
-                );
-              })}
-            </Table.Body>
-          </Table.Content>
-        </Table.ScrollContainer>
-      </Table>
-
-      {/* HeroUI Custom Confirmation Portal Root Node using your strict structure format */}
+      {/* HeroUI Custom Confirmation Portal Root Node */}
       <AlertDialog 
         isOpen={!!pendingAction} 
         onOpenChange={(open) => !open && setPendingAction(null)}
