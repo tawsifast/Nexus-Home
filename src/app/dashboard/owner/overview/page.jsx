@@ -63,7 +63,7 @@ const FetchOwnerAnalyticsData = async () => {
   });
 
   return (
-    <div className="space-y-8 p-4 md:p-8">
+    <div className="space-y-8 p-4 md:p-8 min-h-screen bg-[#030307]">
       {/* ৩টি সামারি কার্ড */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Card 1 */}

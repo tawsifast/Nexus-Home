@@ -11,7 +11,7 @@ const MyPropertiesPage = async () => {
     console.log(properties,"pro");
 
     return (
-        <div className="w-full p-6 bg-[#0a0a0f]/40 border border-white/5 rounded-2xl backdrop-blur-md">
+        <div className="w-full p-6 bg-[#030307] border border-white/5 rounded-2xl backdrop-blur-md">
             <div className="mb-6">
                 <h1 className="text-xl font-bold text-white uppercase tracking-wider">My Properties</h1>
                 <p className="text-xs text-slate-400 mt-1">

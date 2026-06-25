@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import {
-  Table,
   Button,
   Modal,
   TextField,
@@ -94,15 +93,15 @@ export default function PropertiesTable({ properties: initialProperties }) {
   const getStatusStyle = (status) => {
     switch (status?.toLowerCase()) {
       case "approved":
-        return "bg-emerald-500/10 border-emerald-500/30 text-emerald-400 text-xs px-2.5 py-1 rounded-full font-semibold border shadow-[0_0_8px_rgba(16,185,129,0.1)]";
+        return "bg-emerald-500/10 border-emerald-500/30 text-emerald-400 text-xs px-2.5 py-1 rounded-full font-bold border shadow-[0_0_8px_rgba(16,185,129,0.15)]";
       case "rejected":
-        return "bg-rose-500/10 border-rose-500/30 text-rose-400 text-xs px-2.5 py-1 rounded-full font-semibold border shadow-[0_0_8px_rgba(244,63,94,0.1)]";
+        return "bg-rose-500/10 border-rose-500/30 text-rose-400 text-xs px-2.5 py-1 rounded-full font-bold border shadow-[0_0_8px_rgba(244,63,94,0.15)]";
       default:
-        return "bg-amber-500/10 border-amber-500/30 text-amber-400 text-xs px-2.5 py-1 rounded-full font-semibold border shadow-[0_0_8px_rgba(245,158,11,0.1)]";
+        return "bg-amber-500/10 border-amber-500/30 text-amber-400 text-xs px-2.5 py-1 rounded-full font-bold border shadow-[0_0_8px_rgba(245,158,11,0.15)]";
     }
   };
 
-  // লাইটার ম্যাট ইনপুট স্টাইল ভ্যারিয়েবল
+  // লাইটার ম্যাট ইনপুট স্টাইল ভ্যারিয়েবল
   const inputContainerStyles = "[&_input]:bg-[#1a1a26] [&_input]:text-white [&_input]:border-white/10 [&_input]:rounded-xl [&_label]:text-slate-200 [&_label]:font-semibold [&_label]:text-xs [&_label]:mb-1.5 [&_textarea]:bg-[#1a1a26] [&_textarea]:text-white [&_textarea]:border-white/10 [&_textarea]:rounded-xl focus-within:[&_input]:border-cyan-400/50 focus-within:[&_textarea]:border-purple-500/50 transition-all";
 
   if (!properties || properties.length === 0) {
@@ -115,84 +114,96 @@ export default function PropertiesTable({ properties: initialProperties }) {
 
   return (
     <>
-      {/* Table Global Styles Overlay for Dark Mode Visibility */}
-      <div className="[&_thead_tr]:bg-[#1a1a26] [&_thead_tr]:border-b [&_thead_tr]:border-white/10 [&_th]:text-slate-300 [&_th]:font-bold [&_th]:py-4 [&_td]:py-4 [&_tr]:border-b [&_tr]:border-white/5 hover:[&_tr]:bg-white/[0.02]">
-        <Table aria-label="Properties List Table" className="bg-transparent shadow-none">
-          <Table.ScrollContainer>
-            <Table.Content className="min-w-175" aria-label="Owner Properties Layout">
-              <Table.Header>
-                <Table.Column isRowHeader>Property Title</Table.Column>
-                <Table.Column>Location</Table.Column>
-                <Table.Column>Type</Table.Column>
-                <Table.Column>Rent Price</Table.Column>
-                <Table.Column>Status</Table.Column>
-                <Table.Column align="end">Actions</Table.Column>
-              </Table.Header>
-              <Table.Body>
-                {properties.map((item) => {
-                  const itemId = getItemId(item);
-                  const isRejected = item.status?.toLowerCase() === "rejected";
+      {/* 🛠️ স্ট্যান্ডার্ড এইচটিএমএল টেবিল উইথ রেসপন্সিভ স্ক্রোল র‍্যাপার ও হাইলাইটেড রাইটিং */}
+      <div className="w-full overflow-x-auto bg-[#09090f] border border-white/5 rounded-xl shadow-2xl">
+        <table className="w-full text-left border-collapse min-w-[850px]">
+          <thead>
+            <tr className="bg-[#1a1a26] border-b border-white/10">
+              <th className="text-slate-200 font-bold text-xs py-4 px-6 uppercase tracking-wider">Property Title</th>
+              <th className="text-slate-200 font-bold text-xs py-4 px-4 uppercase tracking-wider">Location</th>
+              <th className="text-slate-200 font-bold text-xs py-4 px-4 uppercase tracking-wider">Type</th>
+              <th className="text-slate-200 font-bold text-xs py-4 px-4 uppercase tracking-wider">Rent Price</th>
+              <th className="text-slate-200 font-bold text-xs py-4 px-4 uppercase tracking-wider">Status</th>
+              <th className="text-slate-200 font-bold text-xs py-4 px-6 text-right uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {properties.map((item) => {
+              const itemId = getItemId(item);
+              const isRejected = item.status?.toLowerCase() === "rejected";
 
-                  return (
-                    <Table.Row key={itemId} className="transition-all duration-200">
-                      <Table.Cell className="font-semibold text-slate-200">
-                        {item.title}
-                      </Table.Cell>
-                      <Table.Cell className="text-slate-300 font-medium">
-                        {item.location}
-                      </Table.Cell>
-                      <Table.Cell className="text-slate-400">
-                        {item.propertyType}
-                      </Table.Cell>
-                      <Table.Cell className="text-slate-200 font-bold">
-                        ${item.price} /{" "}
-                        <span className="text-xs font-normal text-slate-500 uppercase tracking-wider">
-                          {item.rentType}
-                        </span>
-                      </Table.Cell>
-                      <Table.Cell>
-                        <div className="flex items-center gap-2">
-                          <span className={getStatusStyle(item.status)}>
-                            {item.status || "Pending"}
-                          </span>
-                          {isRejected && (
-                            <button
-                              onClick={() => handleViewFeedback(item)}
-                              className="p-1.5 rounded-lg bg-white/5 border border-white/10 text-slate-300 hover:text-rose-400 hover:bg-rose-500/10 hover:border-rose-500/30 transition-all cursor-pointer"
-                              title="View Rejection Feedback"
-                            >
-                              <Eye size={13} />
-                            </button>
-                          )}
-                        </div>
-                      </Table.Cell>
-                      <Table.Cell>
-                        <div className="flex items-center justify-end gap-2">
-                          <Button
-                            size="sm"
-                            variant="none"
-                            className="text-cyan-400 border border-cyan-500/20 bg-cyan-500/5 hover:bg-cyan-500/10 rounded-lg font-semibold text-xs px-3 h-8 cursor-pointer transition-all"
-                            onClick={() => handleEditClick(item)}
-                          >
-                            <Edit2 size={13} className="mr-1" /> Edit
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="none"
-                            className="text-rose-400 border border-rose-500/20 bg-rose-500/5 hover:bg-rose-500/10 rounded-lg font-semibold text-xs px-3 h-8 cursor-pointer transition-all"
-                            onClick={() => handleDelete(itemId)}
-                          >
-                            <Trash2 size={13} className="mr-1" /> Delete
-                          </Button>
-                        </div>
-                      </Table.Cell>
-                    </Table.Row>
-                  );
-                })}
-              </Table.Body>
-            </Table.Content>
-          </Table.ScrollContainer>
-        </Table>
+              return (
+                <tr 
+                  key={itemId} 
+                  className="border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors duration-200"
+                >
+                  {/* Property Title - Highlighted */}
+                  <td className="py-4 px-6 text-slate-100 font-bold tracking-wide text-sm">
+                    {item.title}
+                  </td>
+                  
+                  {/* Location - Highlighted */}
+                  <td className="py-4 px-4 text-slate-300 font-semibold text-sm">
+                    {item.location}
+                  </td>
+                  
+                  {/* Type */}
+                  <td className="py-4 px-4 text-slate-400 text-sm font-medium">
+                    {item.propertyType}
+                  </td>
+                  
+                  {/* Rent Price - Bold Cyan Highlight */}
+                  <td className="py-4 px-4 text-cyan-400 font-extrabold text-sm font-mono">
+                    ${item.price?.toLocaleString()} /{" "}
+                    <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                      {item.rentType}
+                    </span>
+                  </td>
+                  
+                  {/* Status Badge */}
+                  <td className="py-4 px-4">
+                    <div className="flex items-center gap-2">
+                      <span className={getStatusStyle(item.status)}>
+                        {item.status || "Pending"}
+                      </span>
+                      {isRejected && (
+                        <button
+                          onClick={() => handleViewFeedback(item)}
+                          className="p-1.5 rounded-lg bg-white/5 border border-white/10 text-slate-300 hover:text-rose-400 hover:bg-rose-500/10 hover:border-rose-500/30 transition-all cursor-pointer"
+                          title="View Rejection Feedback"
+                        >
+                          <Eye size={13} />
+                        </button>
+                      )}
+                    </div>
+                  </td>
+                  
+                  {/* Action Trigger Buttons */}
+                  <td className="py-4 px-6 text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <Button
+                        size="sm"
+                        variant="none"
+                        className="text-cyan-400 border border-cyan-500/20 bg-cyan-500/5 hover:bg-cyan-500/10 rounded-lg font-bold text-xs px-3 h-8 cursor-pointer transition-all"
+                        onClick={() => handleEditClick(item)}
+                      >
+                        <Edit2 size={13} className="mr-1" /> Edit
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="none"
+                        className="text-rose-400 border border-rose-500/20 bg-rose-500/5 hover:bg-rose-500/10 rounded-lg font-bold text-xs px-3 h-8 cursor-pointer transition-all"
+                        onClick={() => handleDelete(itemId)}
+                      >
+                        <Trash2 size={13} className="mr-1" /> Delete
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
 
       {/* আপডেট মোডাল */}
@@ -324,7 +335,7 @@ export default function PropertiesTable({ properties: initialProperties }) {
                 <Button variant="none" className="cursor-pointer border border-white/10 rounded-xl text-slate-300 text-xs font-semibold hover:bg-white/5 px-4 h-9" onClick={() => setIsOpen(false)}>
                   Cancel
                 </Button>
-                <Button type="submit" form="update-property-form" className="bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold text-xs rounded-xl shadow-md shadow-purple-500/10 px-5 h-9 cursor-pointer">
+                <Button type="submit" form="update-property-form" className="bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold text-xs rounded-xl shadow-md shadow-purple-500/10 px-5 h-9 cursor-pointer">
                   Save Changes
                 </Button>
               </Modal.Footer>
@@ -347,16 +358,16 @@ export default function PropertiesTable({ properties: initialProperties }) {
                   Rejection Analysis Log
                 </Modal.Heading>
                 <p className="mt-1 text-xs text-slate-400">
-                  Review comments for: <span className="text-cyan-400 font-semibold">{feedbackPropertyTitle}</span>
+                  Review comments for: <span className="text-cyan-400 font-bold">{feedbackPropertyTitle}</span>
                 </p>
               </Modal.Header>
               <Modal.Body className="p-4 text-sm text-slate-200 leading-relaxed bg-[#1a1a26] rounded-xl border border-white/10 m-5">
-                <p className="whitespace-pre-wrap font-medium font-sans text-xs">{feedbackReason}</p>
+                <p className="whitespace-pre-wrap font-semibold font-sans text-xs">{feedbackReason}</p>
               </Modal.Body>
               <Modal.Footer className="border-t border-white/5 p-4 flex justify-end bg-[#161622]/50">
                 <Button
                   variant="none"
-                  className="bg-rose-600/90 text-white hover:bg-rose-600 font-semibold text-xs rounded-xl px-4 h-9 transition-colors cursor-pointer"
+                  className="bg-rose-600/90 text-white hover:bg-rose-600 font-bold text-xs rounded-xl px-4 h-9 transition-colors cursor-pointer"
                   onClick={() => setIsFeedbackOpen(false)}
                 >
                   Close Review
