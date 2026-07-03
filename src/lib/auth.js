@@ -34,7 +34,7 @@ export const auth = betterAuth({
     },
   },
   advanced: {
-    disableOriginCheck: true,
+    disableCSRFCheck: true,
   },
 });
 
