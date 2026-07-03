@@ -47,23 +47,23 @@ const SignupPage = () => {
     }
   };
 
-  const handleGogleSignIn = async () => {
-    try {
-      const data = await authClient.signIn.social({
-        provider: "google",
-        callbackURL: "/",
-        newUserOptions: {
-          data: {
-            role: "tenant"
-          }
-        }
-      });
-      console.log("Google Auth Init:", data);
-    } catch (err) {
-      toast.error("Google sign in failed");
-      console.error(err);
-    }
-  };
+  // const handleGogleSignIn = async () => {
+  //   try {
+  //     const data = await authClient.signIn.social({
+  //       provider: "google",
+  //       callbackURL: "/",
+  //       newUserOptions: {
+  //         data: {
+  //           role: "tenant"
+  //         }
+  //       }
+  //     });
+  //     console.log("Google Auth Init:", data);
+  //   } catch (err) {
+  //     toast.error("Google sign in failed");
+  //     console.error(err);
+  //   }
+  // };
 
   return (
     <div className="min-h-screen bg-[#0e0f19] text-slate-200 flex items-center justify-center p-4 py-12 antialiased relative overflow-hidden">
@@ -238,14 +238,14 @@ const SignupPage = () => {
           </div>
 
           {/* Social Trigger */}
-          <Button 
+          {/* <Button 
             type="button"
-            onClick={handleGogleSignIn}
+            // onClick={handleGogleSignIn}
             className="w-full bg-[#111221] hover:bg-[#18192c] border border-white/[0.08] text-slate-200 font-semibold rounded-xl h-11 flex items-center justify-center gap-2.5 transition active:scale-[0.98] cursor-pointer"
           >
             <FcGoogle className="size-5" />
             <span className="text-sm">Register with Google Link</span>
-          </Button>
+          </Button> */}
 
         </Form>
       </div>
