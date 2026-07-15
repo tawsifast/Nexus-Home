@@ -9,7 +9,7 @@ const BookingPage = async () => {
     const bookings = await getBookingByBuyer(user?.email);
     
     return (
-        <div className="min-h-screen bg-[#030307] text-slate-100 p-6 sm:p-8 antialiased">
+        <div className="min-h-screen text-slate-100 p-6 sm:p-8 antialiased">
             <div className="max-w-6xl mx-auto space-y-6">
                 
                 {/* Section Header */}

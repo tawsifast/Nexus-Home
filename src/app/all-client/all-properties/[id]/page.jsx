@@ -6,6 +6,7 @@ import { getPropertyReviews } from "@/lib/api/review";
 import { getUserSession } from "@/lib/core/session";
 import { MapPin, ArrowLeft, ShieldCheck, Sparkles, Building } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 
 export default async function PropertyDetailsPage({ params }) {

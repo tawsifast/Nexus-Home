@@ -3,17 +3,16 @@ import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer className="relative bg-[#07070a] text-slate-400 border-t border-white/[0.05] overflow-hidden">
+    <footer className="relative bg-[#07070a] text-slate-400 border-t border-white/5 overflow-hidden">
       {/* Ambient Footer Glow */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[100px] bg-cyan-500/10 rounded-full blur-[80px] pointer-events-none" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-125 h-25 bg-cyan-500/10 rounded-full blur-[80px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 py-12 md:py-16 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-6">
-          
           {/* Brand Section */}
           <div className="space-y-4 md:col-span-1">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-purple-600 flex items-center justify-center text-white font-black text-lg shadow-[0_0_15px_rgba(6,182,212,0.5)]">
+              <div className="w-8 h-8 rounded-lg bg-linear-to-br from-cyan-400 to-purple-600 flex items-center justify-center text-white font-black text-lg shadow-[0_0_15px_rgba(6,182,212,0.5)]">
                 N
               </div>
               <span className="text-xl font-bold tracking-wider text-white">
@@ -21,7 +20,8 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-sm font-light leading-relaxed">
-              Next generation property rental platform. Smart, secure, and boundaryless living experiences.
+              Next generation property rental platform. Smart, secure, and
+              boundaryless living experiences.
             </p>
           </div>
 
@@ -31,9 +31,21 @@ export default function Footer() {
               Platform
             </h4>
             <ul className="space-y-2 text-sm">
-              <li><a href="#" className="hover:text-cyan-400 transition-colors">All Properties</a></li>
-              <li><a href="#" className="hover:text-cyan-400 transition-colors">How it works</a></li>
-              <li><a href="#" className="hover:text-cyan-400 transition-colors">Pricing</a></li>
+              <li>
+                <a href="#" className="hover:text-cyan-400 transition-colors">
+                  All Properties
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-cyan-400 transition-colors">
+                  How it works
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-cyan-400 transition-colors">
+                  Pricing
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -43,9 +55,21 @@ export default function Footer() {
               Legal
             </h4>
             <ul className="space-y-2 text-sm">
-              <li><a href="#" className="hover:text-purple-400 transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-purple-400 transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-purple-400 transition-colors">Security</a></li>
+              <li>
+                <a href="#" className="hover:text-purple-400 transition-colors">
+                  Privacy Policy
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-purple-400 transition-colors">
+                  Terms of Service
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-purple-400 transition-colors">
+                  Security
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -56,21 +80,32 @@ export default function Footer() {
             </h4>
             <div className="flex gap-3">
               {/* X Logo integration as per requirement */}
-              <a href="#" className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/[0.08] flex items-center justify-center text-white hover:bg-white hover:text-black hover:shadow-[0_0_15px_rgba(255,255,255,0.6)] transition-all duration-300">
+              <a
+                href="#"
+                className="w-10 h-10 rounded-xl bg-white/3 border border-white/8 flex items-center justify-center text-white hover:bg-white hover:text-black hover:shadow-[0_0_15px_rgba(255,255,255,0.6)] transition-all duration-300"
+              >
                 <RiTwitterXFill size={18} />
               </a>
-              <a href="#" className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/[0.08] flex items-center justify-center hover:bg-blue-600 hover:text-white hover:shadow-[0_0_15px_rgba(37,99,235,0.6)] transition-all duration-300">
+              <a
+                href="https://www.facebook.com/mdtawsifulislam.islam"
+                className="w-10 h-10 rounded-xl bg-white/3 border border-white/8 flex items-center justify-center hover:bg-blue-600 hover:text-white hover:shadow-[0_0_15px_rgba(37,99,235,0.6)] transition-all duration-300"
+              >
                 <FaFacebookF size={16} />
               </a>
-              <a href="#" className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/[0.08] flex items-center justify-center hover:bg-pink-600 hover:text-white hover:shadow-[0_0_15px_rgba(219,39,119,0.6)] transition-all duration-300">
+              <a
+                href="https://www.instagram.com/_t_a_w_s_i_f__"
+                className="w-10 h-10 rounded-xl bg-white/3 border border-white/8 flex items-center justify-center hover:bg-pink-600 hover:text-white hover:shadow-[0_0_15px_rgba(219,39,119,0.6)] transition-all duration-300"
+              >
                 <FaInstagram size={16} />
               </a>
-              <a href="#" className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/[0.08] flex items-center justify-center hover:bg-blue-500 hover:text-white hover:shadow-[0_0_15px_rgba(14,165,233,0.6)] transition-all duration-300">
+              <a
+                href="https://www.linkedin.com/in/tawsif-islam"
+                className="w-10 h-10 rounded-xl bg-white/3 border border-white/8 flex items-center justify-center hover:bg-blue-500 hover:text-white hover:shadow-[0_0_15px_rgba(14,165,233,0.6)] transition-all duration-300"
+              >
                 <FaLinkedinIn size={16} />
               </a>
             </div>
           </div>
-
         </div>
 
         <hr className="border-white/[0.05] my-8" />

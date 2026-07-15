@@ -10,13 +10,13 @@ export default function Banner() {
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-[120px] pointer-events-none" />
 
       {/* Grid Pattern Overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size-32px_32px] pointer-events-none" />
 
       <div className="relative z-10 max-w-5xl w-full text-center space-y-8 memory-optimized">
         {/* Title */}
-        <h1 className="text-4xl md:text-7xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-purple-400 animate-fade-in">
+        <h1 className="text-4xl md:text-7xl font-extrabold tracking-tight bg-clip-text text-transparent bg-linear-to-r from-white via-slate-200 to-purple-400 animate-fade-in">
           Discover Next-Gen <br />
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-500">
+          <span className="bg-clip-text text-transparent bg-linear-to-r from-cyan-400 to-purple-500">
             Living Spaces
           </span>
         </h1>

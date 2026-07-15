@@ -24,25 +24,25 @@ const Featured = () => {
     return (
         <section className="w-full bg-[#0e0f19] py-16 px-4 md:px-8 relative overflow-hidden">
             {/* Background Decorative Mesh & Subtle Ambient Glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[150px] pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-purple-500/5 rounded-full blur-[150px] pointer-events-none" />
             
             <div className="max-w-7xl mx-auto relative z-10 space-y-10">
                 
                 {/* Section Header */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/[0.06] pb-6">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/6 pb-6">
                     <div className="space-y-2">
                         <div className="flex items-center gap-2">
                             <span className="h-px w-8 bg-cyan-400" />
                             <span className="text-[11px] font-bold text-cyan-400 uppercase tracking-widest">Live Matrix Stream</span>
                         </div>
                         <h2 className="text-2xl md:text-4xl font-black tracking-tight text-white">
-                            Featured <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">Properties</span>
+                            Featured <span className="text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-cyan-400">Properties</span>
                         </h2>
                     </div>
 
                     <div>
                         <Link 
-                            href="/properties" 
+                            href="/all-client/all-properties" 
                             className="inline-flex items-center gap-2 text-xs font-bold text-purple-400 hover:text-purple-300 transition-colors uppercase tracking-wider group"
                         >
                             <span>View All Listings</span>
