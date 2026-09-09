@@ -12,6 +12,14 @@ const AllUsersPage = async () => {
     
     return (
         <div className="p-6 max-w-7xl mx-auto space-y-6">
+            <div className="space-y-1">
+                <h1 className="text-2xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-purple-400">
+                    System User Directory
+                </h1>
+                <p className="text-xs text-slate-400 font-mono">
+                    System Node // Authorization & Access Control Overview
+                </p>
+            </div>
             <UsersTable initialUsers={users} />
         </div>
     );

@@ -9,12 +9,12 @@ const AllPropertiesPage = async () => {
 
     
     return (
-        <div className="p-6 space-y-6 min-h-screen bg-[#030307]">
+        <div className="p-6 space-y-6">
             <div className="space-y-1">
-                <h1 className="text-2xl font-bold tracking-tight text-slate-100">
+                <h1 className="text-2xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-purple-400">
                     Property Asset Control
                 </h1>
-                <p className="text-xs text-slate-500 font-mono">
+                <p className="text-xs text-slate-400 font-mono">
                     System Node  Administrative Inventory Verification
                 </p>
             </div>

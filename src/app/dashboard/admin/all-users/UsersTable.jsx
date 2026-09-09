@@ -56,12 +56,6 @@ export default function UsersTable({ initialUsers }) {
 
   return (
     <div className="bg-[#09090f] border border-white/5 rounded-xl overflow-hidden shadow-2xl p-6">
-      <div className="flex flex-col mb-6">
-        <h2 className="text-xl font-bold text-slate-200">System User Directory</h2>
-        <p className="text-xs text-slate-500 mt-1">
-          Manage system privileges, authorization contexts, and active user credentials with secure authorization verification.
-        </p>
-      </div>
 
       {/* 🛠️ স্ট্যান্ডার্ড এইচটিএমএল টেবিল উইথ রেসপন্সিভ স্ক্রোল র‍্যাপার */}
       <div className="w-full overflow-x-auto">
