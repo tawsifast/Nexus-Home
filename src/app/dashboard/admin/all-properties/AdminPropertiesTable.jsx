@@ -100,9 +100,9 @@ export default function AdminPropertiesTable({ initialProperties }) {
   }
 
   return (
-    <div className="bg-[#09090f] border border-white/5 rounded-xl overflow-hidden shadow-2xl">
+    <div className="bg-[#09090f] border border-white/5 rounded-xl overflow-hidden shadow-2xl w-full max-w-full">
       {/* 🛠️ স্ট্যান্ডার্ড এইচটিএমএল টেবিল উইথ রেসপন্সিভ র‍্যাপার */}
-      <div className="w-full overflow-x-auto">
+      <div className="w-full max-w-full overflow-x-auto">
         <table className="w-full text-left border-collapse min-w-[1000px]">
           <thead>
             <tr className="border-b border-white/5 bg-white/[0.01]">
@@ -135,7 +135,7 @@ export default function AdminPropertiesTable({ initialProperties }) {
                   className="border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors"
                 >
                   {/* Property Info */}
-                  <td className="py-4 px-6">
+                  <td className="py-4 px-6 align-middle">
                     <div className="flex items-center gap-3">
                       <div className="p-2 bg-white/5 rounded-lg text-slate-400 shrink-0">
                         <Home className="size-4" />
@@ -152,7 +152,7 @@ export default function AdminPropertiesTable({ initialProperties }) {
                   </td>
 
                   {/* Specs & Space */}
-                  <td className="py-4 px-4">
+                  <td className="py-4 px-4 align-middle">
                     <div className="text-xs text-slate-300 font-mono space-y-0.5">
                       <span className="block">
                         {item.propertyType} • {item.rentType}
@@ -164,14 +164,14 @@ export default function AdminPropertiesTable({ initialProperties }) {
                   </td>
 
                   {/* Financial Valuation */}
-                  <td className="py-4 px-4">
+                  <td className="py-4 px-4 align-middle">
                     <span className="text-sm font-bold font-mono text-cyan-400">
                       ${item.price?.toLocaleString() || item.rentPrice?.toLocaleString()}
                     </span>
                   </td>
 
                   {/* Ownership Context */}
-                  <td className="py-4 px-4">
+                  <td className="py-4 px-4 align-middle">
                     <div className="text-xs font-mono text-slate-400 space-y-0.5">
                       <span className="block text-slate-300 line-clamp-1">
                         {item.ownerEmail}
@@ -180,7 +180,7 @@ export default function AdminPropertiesTable({ initialProperties }) {
                   </td>
 
                   {/* Verification State */}
-                  <td className="py-4 px-4">
+                  <td className="py-4 px-4 align-middle">
                     <div className="space-y-1">
                       <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold font-mono border uppercase tracking-wider ${
                         item.status === "Approved"
@@ -195,7 +195,7 @@ export default function AdminPropertiesTable({ initialProperties }) {
                   </td>
 
                   {/* Action Nodes */}
-                  <td className="py-4 px-6 text-right">
+                  <td className="py-4 px-6 text-right align-middle">
                     <div className="flex items-center justify-end gap-1.5">
                       {item.status === "Pending" && (
                         <>

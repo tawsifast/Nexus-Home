@@ -10,7 +10,7 @@ export default async function DashboardLayout({ children }) {
     <div className="flex flex-col lg:flex-row min-h-screen bg-[#0a0a0f]">
       <DashboardSidebar currentRole={userRole} />
       
-      <main className="flex-1 px-4 pb-10 pt-28 lg:pt-6 lg:p-6 text-white w-full">
+      <main className="flex-1 min-w-0 px-4 pb-10 pt-28 lg:pt-6 lg:p-6 text-white w-full">
         {children}
       </main>
     </div>

@@ -46,7 +46,7 @@ export function DashboardSidebar({ currentRole = "tenant" }) {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:block w-64 shrink-0 border-r border-white/5 p-4 bg-[#0a0a0f] min-h-[calc(100vh-4rem)]">
+      <aside className="hidden lg:block w-64 shrink-0 border-r border-white/5 p-4 bg-[#0a0a0f] sticky top-16 self-start h-[calc(100vh-4rem)] overflow-y-auto">
         <SidebarLinks role={currentRole} />
       </aside>
 

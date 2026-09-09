@@ -11,6 +11,17 @@ import {
   Smartphone 
 } from "lucide-react";
 
+const formatDate = (value) => {
+  if (!value) return "N/A";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return String(value);
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+  });
+};
+
 export default function AdminBookingTable({ initialBookings }) {
   const [bookings] = useState(initialBookings || []);
 
@@ -25,9 +36,9 @@ export default function AdminBookingTable({ initialBookings }) {
   }
 
   return (
-    <div className="bg-[#09090f] border border-white/5 rounded-xl overflow-hidden shadow-2xl">
+    <div className="bg-[#09090f] border border-white/5 rounded-xl overflow-hidden shadow-2xl w-full max-w-full">
       {/* 🛠️ স্ট্যান্ডার্ড এইচটিএমএল টেবিল উইথ রেসপন্সিভ স্ক্রোল র‍্যাপার */}
-      <div className="w-full overflow-x-auto">
+      <div className="w-full max-w-full overflow-x-auto">
         <table className="w-full text-left border-collapse min-w-[1000px]">
           <thead>
             <tr className="border-b border-white/5 bg-white/[0.01]">
@@ -52,8 +63,8 @@ export default function AdminBookingTable({ initialBookings }) {
             </tr>
           </thead>
           <tbody>
-            {bookings.map((item) => {
-              const bookingId = item._id?.$oid || item._id || Math.random().toString();
+            {bookings.map((item, index) => {
+              const bookingId = item._id?.$oid || item._id || `booking-${index}`;
               return (
                 <tr 
                   key={bookingId} 
@@ -61,39 +72,41 @@ export default function AdminBookingTable({ initialBookings }) {
                 >
                   
                   {/* Tenant Profile Context */}
-                  <td className="py-4 px-6">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-white/5 rounded-lg text-slate-400">
+                  <td className="py-4 px-6 align-middle">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="p-2 bg-white/5 rounded-lg text-slate-400 shrink-0">
                         <User className="size-4" />
                       </div>
-                      <div className="space-y-0.5">
-                        <span className="font-semibold text-slate-200 block text-sm">
+                      <div className="space-y-0.5 min-w-0">
+                        <span className="font-semibold text-slate-200 block text-sm truncate">
                           {item.userName || "Unknown Tenant"}
                         </span>
-                        <span className="text-xs text-slate-500 font-mono flex items-center gap-1">
-                          <Mail className="size-3 text-slate-600" /> {item.userEmail}
+                        <span className="text-xs text-slate-500 font-mono flex items-center gap-1 min-w-0">
+                          <Mail className="size-3 text-slate-600 shrink-0" />
+                          <span className="truncate">{item.userEmail}</span>
                         </span>
-                        <span className="text-[11px] text-slate-500 font-mono flex items-center gap-1">
-                          <Smartphone className="size-3 text-slate-600" /> {item.contactNumber}
+                        <span className="text-[11px] text-slate-500 font-mono flex items-center gap-1 min-w-0">
+                          <Smartphone className="size-3 text-slate-600 shrink-0" />
+                          <span className="truncate">{item.contactNumber}</span>
                         </span>
                       </div>
                     </div>
                   </td>
 
                   {/* Property Destination Context */}
-                  <td className="py-4 px-4">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-white/5 rounded-lg text-slate-400">
+                  <td className="py-4 px-4 align-middle">
+                    <div className="flex items-center gap-3 min-w-0 w-full">
+                      <div className="p-2 bg-white/5 rounded-lg text-slate-400 shrink-0">
                         <Building2 className="size-4" />
                       </div>
-                      <div className="space-y-0.5">
-                        <span className="font-medium text-slate-200 block text-sm line-clamp-1">
+                      <div className="space-y-0.5 min-w-0">
+                        <span className="font-medium text-slate-200 block text-sm truncate">
                           {item.title}
                         </span>
-                        <span className="text-xs text-slate-500 block">
+                        <span className="text-xs text-slate-500 block truncate">
                           {item.location}
                         </span>
-                        <span className="text-[10px] text-slate-600 block font-mono">
+                        <span className="text-[10px] text-slate-600 block font-mono truncate">
                           Owner: {item.ownerEmail}
                         </span>
                       </div>
@@ -101,20 +114,20 @@ export default function AdminBookingTable({ initialBookings }) {
                   </td>
 
                   {/* Timeline Metrics */}
-                  <td className="py-4 px-4">
+                  <td className="py-4 px-4 align-middle whitespace-nowrap">
                     <div className="space-y-1">
-                      <span className="text-xs text-slate-300 font-mono flex items-center gap-1.5">
-                        <Calendar className="size-3.5 text-slate-500" />
-                        In: {item.moveInDate}
+                      <span className="text-xs text-slate-300 font-mono flex items-center gap-1.5 whitespace-nowrap">
+                        <Calendar className="size-3.5 text-slate-500 shrink-0" />
+                        In: {formatDate(item.moveInDate)}
                       </span>
-                      <span className="text-[10px] text-slate-600 font-mono block">
-                        Logged: {item.bookedAt ? new Date(item.bookedAt).toLocaleDateString() : 'N/A'}
+                      <span className="text-[10px] text-slate-600 font-mono block whitespace-nowrap">
+                        Logged: {formatDate(item.bookedAt)}
                       </span>
                     </div>
                   </td>
 
                   {/* Financial Layout */}
-                  <td className="py-4 px-4">
+                  <td className="py-4 px-4 align-middle whitespace-nowrap">
                     <span className="text-sm font-bold font-mono text-cyan-400 flex items-center">
                       <DollarSign className="size-3.5 shrink-0" />
                       {item.price?.toLocaleString()}
@@ -122,8 +135,8 @@ export default function AdminBookingTable({ initialBookings }) {
                   </td>
 
                   {/* Escrow Payment Status Badge */}
-                  <td className="py-4 px-4">
-                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold font-mono border uppercase tracking-wider ${
+                  <td className="py-4 px-4 align-middle whitespace-nowrap">
+                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold font-mono border uppercase tracking-wider whitespace-nowrap ${
                       item.paymentStatus === "paid"
                         ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
                         : "bg-rose-500/10 text-rose-400 border-rose-500/20"
@@ -133,7 +146,7 @@ export default function AdminBookingTable({ initialBookings }) {
                   </td>
 
                   {/* Booking Lifecycle State */}
-                  <td className="py-4 px-6 text-right">
+                  <td className="py-4 px-6 text-right align-middle whitespace-nowrap">
                     <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium border ${
                       item.bookingStatus === "Approved"
                         ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
