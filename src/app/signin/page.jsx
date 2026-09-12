@@ -96,6 +96,7 @@ const SigninPage = () => {
             isRequired
             name="email"
             type="email"
+            defaultValue="mitsuha@gmail.com"
             className="w-full space-y-1.5"
             validate={(value) => {
               if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
@@ -109,7 +110,6 @@ const SigninPage = () => {
             </Label>
             <Input 
               placeholder="Enter your email" 
-              
               className="w-full bg-[#0d0e16] border border-white/10 rounded-xl text-slate-100 placeholder-slate-600 focus:border-cyan-500/50 focus:shadow-[0_0_15px_rgba(34,211,238,0.1)] px-4 py-2.5 transition-all text-sm outline-none"
             />
             <FieldError className="text-xs font-medium text-rose-400 pt-1 block" />
@@ -119,6 +119,7 @@ const SigninPage = () => {
           <TextField
             isRequired
             name="password"
+            defaultValue="Mitsuha12345"
             type={showPassword ? "text" : "password"}
             className="w-full space-y-1.5"
           >
