@@ -14,11 +14,23 @@ import {
 } from "@heroui/react";
 import { redirect } from "next/navigation";
 import toast from "react-hot-toast";
-import { ShieldCheck, Lock, Eye, EyeOff } from "lucide-react";
+import { ShieldCheck, Lock, Eye, EyeOff, User, Building2 } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
+
+const DEMO_ACCOUNTS = [
+  { label: "Tenant", email: "mitsuha@gmail.com", password: "Mitsuha12345" },
+  { label: "Owner", email: "nezuko@gmail.com", password: "Nezuko12345" },
+];
 
 const SigninPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState(DEMO_ACCOUNTS[0].email);
+  const [password, setPassword] = useState(DEMO_ACCOUNTS[0].password);
+
+  const fillDemo = (demoEmail, demoPassword) => {
+    setEmail(demoEmail);
+    setPassword(demoPassword);
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -96,7 +108,8 @@ const SigninPage = () => {
             isRequired
             name="email"
             type="email"
-            defaultValue="mitsuha@gmail.com"
+            value={email}
+            onChange={setEmail}
             className="w-full space-y-1.5"
             validate={(value) => {
               if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
@@ -119,8 +132,9 @@ const SigninPage = () => {
           <TextField
             isRequired
             name="password"
-            defaultValue="Mitsuha12345"
             type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={setPassword}
             className="w-full space-y-1.5"
           >
             <Label className="text-xs font-bold text-slate-400 uppercase tracking-wider block">
@@ -129,7 +143,6 @@ const SigninPage = () => {
             <div className="relative w-full">
               <Input 
                 placeholder="Enter your password"
-               
                 className="w-full bg-[#0d0e16] border border-white/10 rounded-xl text-slate-100 placeholder-slate-600 focus:border-purple-500/50 focus:shadow-[0_0_15px_rgba(168,85,247,0.1)] px-4 py-2.5 pr-11 transition-all text-sm outline-none"
                 />
               <button
@@ -162,11 +175,42 @@ const SigninPage = () => {
             </Button>
             
             <Button 
-              type="reset" 
+              type="button" 
               variant="secondary"
+              onPress={() => fillDemo(DEMO_ACCOUNTS[0].email, DEMO_ACCOUNTS[0].password)}
               className="px-4 py-2.5 bg-white/4 hover:bg-white/8 text-slate-300 border border-white/10 rounded-xl text-sm font-semibold tracking-wide transition-all active:scale-[0.98] cursor-pointer"
             >
               Reset
+            </Button>
+          </div>
+
+          {/* Demo Credentials Autofill Buttons */}
+          <div className="grid grid-cols-3 gap-2 w-full">
+            <Button
+              type="button"
+              onPress={() => fillDemo(DEMO_ACCOUNTS[0].email, DEMO_ACCOUNTS[0].password)}
+              className="inline-flex items-center justify-center gap-1.5 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 px-2 py-2.5 rounded-xl text-[11px] font-bold tracking-wide transition-all active:scale-[0.98] cursor-pointer"
+            >
+              <User className="size-3.5 shrink-0" />
+              Tenant Demo
+            </Button>
+
+            <Button
+              type="button"
+              onPress={() => fillDemo(DEMO_ACCOUNTS[1].email, DEMO_ACCOUNTS[1].password)}
+              className="inline-flex items-center justify-center gap-1.5 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 px-2 py-2.5 rounded-xl text-[11px] font-bold tracking-wide transition-all active:scale-[0.98] cursor-pointer"
+            >
+              <Building2 className="size-3.5 shrink-0" />
+              Owner Demo
+            </Button>
+
+            <Button
+              type="button"
+              isDisabled
+              className="inline-flex items-center justify-center gap-1.5 bg-white/4 text-slate-600 border border-white/10 px-2 py-2.5 rounded-xl text-[11px] font-bold tracking-wide cursor-not-allowed opacity-60"
+            >
+              <ShieldCheck className="size-3.5 shrink-0" />
+              Admin Demo
             </Button>
           </div>
 

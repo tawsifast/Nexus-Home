@@ -10,21 +10,24 @@ import {
   Calendar,
   DollarSign,
   Clock,
+  Loader2,
+  Mail,
+  FileText,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { updateBooking } from "@/lib/actions/ownerBooking";
 
 const OwnerBookingTable = ({ initialBookings }) => {
   const [bookings, setBookmarks] = useState(initialBookings || []);
+  const [loadingId, setLoadingId] = useState(null);
 
   const handleStatusUpdate = async (id, newStatus) => {
     try {
+      setLoadingId(id);
       const res = await updateBooking(id, { bookingStatus: newStatus });
-      console.log(res, "res");
 
       if (!res.modifiedCount) throw new Error("Failed to update status");
 
-      // Update state instantly
       setBookmarks((prev) =>
         prev.map((item) =>
           item._id === id ? { ...item, bookingStatus: newStatus } : item,
@@ -35,109 +38,116 @@ const OwnerBookingTable = ({ initialBookings }) => {
     } catch (error) {
       console.error(error);
       toast.error("Something went wrong!");
+    } finally {
+      setLoadingId(null);
     }
   };
 
   return (
-    <div className="bg-[#09090f] border border-white/5 rounded-xl overflow-hidden shadow-2xl">
+    <div className="w-full">
       {bookings.length === 0 ? (
-        <div className="text-center py-16">
-          <p className="text-sm text-slate-500 font-mono">
-            No booking requests available.
+        <div className="text-center py-20 bg-slate-900/40 border border-slate-800 rounded-2xl">
+          <Building2 className="size-8 text-slate-600 mx-auto mb-3" />
+          <p className="text-sm font-medium text-slate-400">
+            No booking requests available
           </p>
         </div>
       ) : (
-        /* 🛠️ স্ট্যান্ডার্ড এইচটিএমএল টেবিল উইথ রেসপন্সিভ স্ক্রোল র‍্যাপার */
-        <div className="w-full overflow-x-auto">
-          <table className="w-full text-left border-collapse min-w-[1000px]">
-            <thead>
-              <tr className="border-b border-white/5 bg-white/[0.01]">
-                <th className="text-slate-400 font-semibold text-xs py-4 px-6">
-                  Tenant Information
-                </th>
-                <th className="text-slate-400 font-semibold text-xs py-4 px-4">
-                  Property Information
-                </th>
-                <th className="text-slate-400 font-semibold text-xs py-4 px-4">
-                  Move In Date
-                </th>
-                <th className="text-slate-400 font-semibold text-xs py-4 px-4">
-                  Booking Amount
-                </th>
-                <th className="text-slate-400 font-semibold text-xs py-4 px-4">
-                  Payment Status
-                </th>
-                <th className="text-slate-400 font-semibold text-xs py-4 px-4">
-                  Booking Status
-                </th>
-                <th className="text-slate-400 font-semibold text-xs py-4 px-6 text-right">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {bookings.map((item) => (
-                <tr
-                  key={item._id}
-                  className="border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors"
-                >
-                  {/* Tenant Information */}
-                  <td className="py-4 px-6">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-white/5 rounded-lg text-slate-400">
-                        <User className="size-4" />
-                      </div>
-                      <div>
-                        <span className="font-semibold text-slate-200 block text-sm">
-                          {item.userName}
-                        </span>
-                        <span className="text-xs text-slate-500 block font-mono mt-0.5">
-                          {item.userEmail}
-                        </span>
-                        <span className="text-[11px] text-slate-400 block mt-0.5 italic">
-                          Note: {item.additionalNotes}
-                        </span>
-                      </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {bookings.map((item) => {
+            const isProcessing = loadingId === item._id;
+            const isPending = item.bookingStatus === "Pending";
+
+            return (
+              <div
+                key={item._id}
+                className="bg-slate-900/60 border border-slate-800/80 hover:border-slate-700/80 transition-all rounded-2xl p-5 flex flex-col justify-between shadow-lg relative overflow-hidden group"
+              >
+                {/* Status Indicator Top Bar */}
+                <div
+                  className={`absolute top-0 left-0 right-0 h-1 ${
+                    item.bookingStatus === "Approved"
+                      ? "bg-emerald-500"
+                      : item.bookingStatus === "Rejected"
+                      ? "bg-rose-500"
+                      : "bg-amber-500"
+                  }`}
+                />
+
+                <div>
+                  {/* Top Header: Property Title & Price */}
+                  <div className="flex items-start justify-between gap-3 mb-4">
+                    <div>
+                      <span className="text-xs font-mono text-indigo-400 uppercase tracking-wider block mb-1">
+                        Property
+                      </span>
+                      <h3 className="font-bold text-slate-100 text-base line-clamp-1">
+                        {item.title}
+                      </h3>
+                      <p className="text-xs text-slate-400 line-clamp-1">
+                        {item.location}
+                      </p>
                     </div>
-                  </td>
-
-                  {/* Property Information */}
-                  <td className="py-4 px-4">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-white/5 rounded-lg text-slate-400">
-                        <Building2 className="size-4" />
-                      </div>
-                      <div>
-                        <span className="font-semibold text-slate-200 block text-sm line-clamp-1">
-                          {item.title}
-                        </span>
-                        <span className="text-xs text-slate-500 block font-mono mt-0.5">
-                          {item.location}
-                        </span>
-                      </div>
+                    <div className="text-right shrink-0">
+                      <span className="text-xs font-mono text-emerald-400 block mb-0.5">
+                        Amount
+                      </span>
+                      <span className="text-lg font-extrabold text-emerald-400 font-mono">
+                        ${item.price?.toLocaleString()}
+                      </span>
                     </div>
-                  </td>
+                  </div>
 
-                  {/* Move-in Date */}
-                  <td className="py-4 px-4">
-                    <span className="text-sm text-slate-300 font-mono flex items-center gap-1.5">
-                      <Calendar className="size-3.5 text-slate-500" />
-                      {item.moveInDate}
-                    </span>
-                  </td>
+                  {/* Divider */}
+                  <div className="h-px bg-slate-800/60 my-4" />
 
-                  {/* Booking Amount */}
-                  <td className="py-4 px-4">
-                    <span className="text-sm font-bold font-mono text-emerald-400 flex items-center">
-                      <DollarSign className="size-3.5 shrink-0" />
-                      {item.price?.toLocaleString()}
-                    </span>
-                  </td>
+                  {/* Tenant Details */}
+                  <div className="space-y-2.5 mb-5">
+                    <div className="flex items-center gap-2 text-slate-300 text-xs">
+                      <User className="size-3.5 text-slate-400 shrink-0" />
+                      <span className="font-medium text-slate-200">
+                        {item.userName}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 text-slate-400 text-xs">
+                      <Mail className="size-3.5 text-slate-500 shrink-0" />
+                      <span className="font-mono truncate">{item.userEmail}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-slate-300 text-xs">
+                      <Calendar className="size-3.5 text-slate-400 shrink-0" />
+                      <span>Move-in: <strong className="font-mono text-slate-200">{item.moveInDate}</strong></span>
+                    </div>
 
-                  {/* Payment Status */}
-                  <td className="py-4 px-4">
+                    {/* Notes if available */}
+                    {item.additionalNotes && (
+                      <div className="flex items-start gap-2 text-xs bg-slate-950/40 p-2.5 rounded-xl border border-slate-800/60 text-slate-400 mt-3">
+                        <FileText className="size-3.5 text-slate-500 shrink-0 mt-0.5" />
+                        <p className="italic line-clamp-2">"{item.additionalNotes}"</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Footer: Badges & Action Buttons */}
+                <div className="pt-4 border-t border-slate-800/60 flex items-center justify-between gap-2 mt-auto">
+                  <div className="flex items-center gap-2">
+                    {/* Booking Status Badge */}
                     <span
-                      className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-semibold font-mono border uppercase tracking-wider ${
+                      className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium border ${
+                        item.bookingStatus === "Approved"
+                          ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                          : item.bookingStatus === "Rejected"
+                          ? "bg-rose-500/10 text-rose-400 border-rose-500/20"
+                          : "bg-amber-500/10 text-amber-400 border-amber-500/20"
+                      }`}
+                    >
+                      <Clock className="size-3" />
+                      {item.bookingStatus}
+                    </span>
+
+                    {/* Payment Status Badge */}
+                    <span
+                      className={`inline-flex items-center px-2 py-1 rounded-lg text-[10px] font-bold font-mono uppercase tracking-wider border ${
                         item.paymentStatus?.toLowerCase() === "paid"
                           ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
                           : "bg-rose-500/10 text-rose-400 border-rose-500/20"
@@ -145,56 +155,51 @@ const OwnerBookingTable = ({ initialBookings }) => {
                     >
                       {item.paymentStatus}
                     </span>
-                  </td>
+                  </div>
 
-                  {/* Booking Status Badge Column */}
-                  <td className="py-4 px-4">
-                    <span
-                      className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium border ${
-                        item.bookingStatus === "Approved"
-                          ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
-                          : item.bookingStatus === "Rejected"
-                            ? "bg-rose-500/10 text-rose-400 border-rose-500/20"
-                            : "bg-amber-500/10 text-amber-400 border-amber-500/20"
-                      }`}
-                    >
-                      <Clock className="size-3.5" /> {item.bookingStatus}
-                    </span>
-                  </td>
-
-                  {/* Action Triggers */}
-                  <td className="py-4 px-6 text-right">
-                    {item.bookingStatus === "Pending" ? (
-                      <div className="flex items-center justify-end gap-2">
+                  {/* Actions */}
+                  <div>
+                    {isPending ? (
+                      <div className="flex items-center gap-1.5">
                         <Button
+                          isIconOnly
                           size="sm"
-                          onPress={() =>
-                            handleStatusUpdate(item._id, "Approved")
-                          }
-                          className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-lg text-xs font-semibold cursor-pointer inline-flex items-center gap-1 transition-all"
+                          isDisabled={isProcessing}
+                          onPress={() => handleStatusUpdate(item._id, "Approved")}
+                          className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20 rounded-xl size-8 min-w-0"
+                          title="Approve"
                         >
-                          <Check className="size-3.5" /> Approve
+                          {isProcessing ? (
+                            <Loader2 className="size-3.5 animate-spin" />
+                          ) : (
+                            <Check className="size-4" />
+                          )}
                         </Button>
                         <Button
+                          isIconOnly
                           size="sm"
-                          onPress={() =>
-                            handleStatusUpdate(item._id, "Rejected")
-                          }
-                          className="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 px-2.5 py-1 rounded-lg text-xs font-semibold cursor-pointer inline-flex items-center gap-1 transition-all"
+                          isDisabled={isProcessing}
+                          onPress={() => handleStatusUpdate(item._id, "Rejected")}
+                          className="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 rounded-xl size-8 min-w-0"
+                          title="Reject"
                         >
-                          <X className="size-3.5" /> Reject
+                          {isProcessing ? (
+                            <Loader2 className="size-3.5 animate-spin" />
+                          ) : (
+                            <X className="size-4" />
+                          )}
                         </Button>
                       </div>
                     ) : (
-                      <span className="text-xs text-slate-500 font-mono italic">
-                        Action Completed
+                      <span className="text-[11px] text-slate-500 font-mono italic">
+                        Done
                       </span>
                     )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
