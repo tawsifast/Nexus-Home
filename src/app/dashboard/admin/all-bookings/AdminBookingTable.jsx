@@ -1,14 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import { 
-  User, 
-  Building2, 
-  Calendar, 
-  DollarSign, 
-  ShieldAlert, 
-  Mail, 
-  Smartphone 
+import {
+  User,
+  Building2,
+  Calendar,
+  DollarSign,
+  Mail,
+  Smartphone,
+  CheckCircle,
+  XCircle,
+  Clock,
 } from "lucide-react";
 
 const formatDate = (value) => {
@@ -27,66 +29,64 @@ export default function AdminBookingTable({ initialBookings }) {
 
   if (bookings.length === 0) {
     return (
-      <div className="bg-[#09090f] border border-white/5 rounded-xl py-16 text-center">
-        <p className="text-sm text-slate-500 font-mono">
-          No active system booking logs found.
-        </p>
+      <div className="text-center py-16 bg-transparent">
+        <p className="text-sm text-slate-400 font-mono">No bookings found.</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-[#09090f] border border-white/5 rounded-xl overflow-hidden shadow-2xl w-full max-w-full">
-      {/* 🛠️ স্ট্যান্ডার্ড এইচটিএমএল টেবিল উইথ রেসপন্সিভ স্ক্রোল র‍্যাপার */}
-      <div className="w-full max-w-full overflow-x-auto">
-        <table className="w-full text-left border-collapse min-w-[1000px]">
+    <div className="w-full bg-slate-950/90 backdrop-blur-md border border-slate-800/80 rounded-2xl overflow-hidden shadow-2xl shadow-cyan-950/20 max-w-full">
+      <div className="w-full max-w-full overflow-x-auto scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
+        <table className="w-full min-w-[1000px] text-left border-collapse">
           <thead>
-            <tr className="border-b border-white/5 bg-white/[0.01]">
-              <th className="text-slate-400 font-semibold text-xs py-4 px-6">
+            <tr className="border-b border-slate-800 bg-slate-900/90">
+              <th className="py-4 px-6 text-[11px] font-bold tracking-widest text-slate-400 uppercase">
                 Tenant Info
               </th>
-              <th className="text-slate-400 font-semibold text-xs py-4 px-4">
+              <th className="py-4 px-4 text-[11px] font-bold tracking-widest text-slate-400 uppercase">
                 Property Context
               </th>
-              <th className="text-slate-400 font-semibold text-xs py-4 px-4">
+              <th className="py-4 px-4 text-[11px] font-bold tracking-widest text-slate-400 uppercase">
                 Timeline Metrics
               </th>
-              <th className="text-slate-400 font-semibold text-xs py-4 px-4">
+              <th className="py-4 px-4 text-[11px] font-bold tracking-widest text-slate-400 uppercase">
                 Financials
               </th>
-              <th className="text-slate-400 font-semibold text-xs py-4 px-4">
+              <th className="py-4 px-4 text-[11px] font-bold tracking-widest text-slate-400 uppercase">
                 Escrow Status
               </th>
-              <th className="text-slate-400 font-semibold text-xs py-4 px-6 text-right">
+              <th className="py-4 px-6 text-right text-[11px] font-bold tracking-widest text-slate-400 uppercase">
                 Node Status
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-slate-800/60 bg-transparent">
             {bookings.map((item, index) => {
               const bookingId = item._id?.$oid || item._id || `booking-${index}`;
+              const isPaid = item.paymentStatus?.toLowerCase() === "paid";
+              const status = item.bookingStatus?.toLowerCase();
               return (
-                <tr 
-                  key={bookingId} 
-                  className="border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors"
+                <tr
+                  key={bookingId}
+                  className="hover:bg-cyan-950/20 transition-all duration-200 group"
                 >
-                  
                   {/* Tenant Profile Context */}
                   <td className="py-4 px-6 align-middle">
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className="p-2 bg-white/5 rounded-lg text-slate-400 shrink-0">
+                      <div className="p-2 bg-cyan-950/50 text-cyan-400 rounded-lg border border-cyan-500/30 shrink-0">
                         <User className="size-4" />
                       </div>
                       <div className="space-y-0.5 min-w-0">
-                        <span className="font-semibold text-slate-200 block text-sm truncate">
+                        <span className="font-bold text-slate-100 tracking-wide text-sm truncate block group-hover:text-cyan-400 transition-colors">
                           {item.userName || "Unknown Tenant"}
                         </span>
-                        <span className="text-xs text-slate-500 font-mono flex items-center gap-1 min-w-0">
-                          <Mail className="size-3 text-slate-600 shrink-0" />
+                        <span className="text-[11px] text-slate-400 font-mono flex items-center gap-1 min-w-0">
+                          <Mail className="size-3 text-cyan-400 shrink-0" />
                           <span className="truncate">{item.userEmail}</span>
                         </span>
-                        <span className="text-[11px] text-slate-500 font-mono flex items-center gap-1 min-w-0">
-                          <Smartphone className="size-3 text-slate-600 shrink-0" />
+                        <span className="text-[11px] text-slate-400 font-mono flex items-center gap-1 min-w-0">
+                          <Smartphone className="size-3 text-cyan-400 shrink-0" />
                           <span className="truncate">{item.contactNumber}</span>
                         </span>
                       </div>
@@ -96,17 +96,17 @@ export default function AdminBookingTable({ initialBookings }) {
                   {/* Property Destination Context */}
                   <td className="py-4 px-4 align-middle">
                     <div className="flex items-center gap-3 min-w-0 w-full">
-                      <div className="p-2 bg-white/5 rounded-lg text-slate-400 shrink-0">
+                      <div className="p-2 bg-cyan-950/50 text-cyan-400 rounded-lg border border-cyan-500/30 shrink-0">
                         <Building2 className="size-4" />
                       </div>
                       <div className="space-y-0.5 min-w-0">
-                        <span className="font-medium text-slate-200 block text-sm truncate">
+                        <span className="font-bold text-slate-100 tracking-wide text-sm truncate block group-hover:text-cyan-400 transition-colors">
                           {item.title}
                         </span>
-                        <span className="text-xs text-slate-500 block truncate">
+                        <span className="text-[11px] text-slate-400 block truncate">
                           {item.location}
                         </span>
-                        <span className="text-[10px] text-slate-600 block font-mono truncate">
+                        <span className="text-[11px] text-slate-500 block font-mono truncate">
                           Owner: {item.ownerEmail}
                         </span>
                       </div>
@@ -116,11 +116,11 @@ export default function AdminBookingTable({ initialBookings }) {
                   {/* Timeline Metrics */}
                   <td className="py-4 px-4 align-middle whitespace-nowrap">
                     <div className="space-y-1">
-                      <span className="text-xs text-slate-300 font-mono flex items-center gap-1.5 whitespace-nowrap">
-                        <Calendar className="size-3.5 text-slate-500 shrink-0" />
+                      <span className="text-sm text-slate-300 font-mono flex items-center gap-1.5 whitespace-nowrap">
+                        <Calendar className="size-3.5 text-cyan-400 shrink-0" />
                         In: {formatDate(item.moveInDate)}
                       </span>
-                      <span className="text-[10px] text-slate-600 font-mono block whitespace-nowrap">
+                      <span className="text-[11px] text-slate-500 font-mono block whitespace-nowrap">
                         Logged: {formatDate(item.bookedAt)}
                       </span>
                     </div>
@@ -128,37 +128,47 @@ export default function AdminBookingTable({ initialBookings }) {
 
                   {/* Financial Layout */}
                   <td className="py-4 px-4 align-middle whitespace-nowrap">
-                    <span className="text-sm font-bold font-mono text-cyan-400 flex items-center">
+                    <span className="text-sm font-black font-mono text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.25)] flex items-center">
                       <DollarSign className="size-3.5 shrink-0" />
                       {item.price?.toLocaleString()}
                     </span>
                   </td>
 
-                  {/* Escrow Payment Status Badge */}
+                  {/* Payment Status Badge */}
                   <td className="py-4 px-4 align-middle whitespace-nowrap">
-                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold font-mono border uppercase tracking-wider whitespace-nowrap ${
-                      item.paymentStatus?.toLowerCase() === "paid"
-                        ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
-                        : "bg-rose-500/10 text-rose-400 border-rose-500/20"
+                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold font-mono border uppercase tracking-wider whitespace-nowrap ${
+                      isPaid
+                        ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
+                        : "bg-rose-500/10 text-rose-400 border-rose-500/30"
                     }`}>
+                      {isPaid ? (
+                        <CheckCircle className="size-3" />
+                      ) : (
+                        <Clock className="size-3" />
+                      )}
                       {item.paymentStatus || "unpaid"}
                     </span>
                   </td>
 
                   {/* Booking Lifecycle State */}
                   <td className="py-4 px-6 text-right align-middle whitespace-nowrap">
-                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium border ${
-                      item.bookingStatus === "Approved"
-                        ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
-                        : item.bookingStatus === "Rejected"
-                        ? "bg-rose-500/10 text-rose-400 border-rose-500/20"
-                        : "bg-amber-500/10 text-amber-400 border-amber-500/20"
+                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold font-mono border uppercase tracking-wider whitespace-nowrap ${
+                      status === "approved"
+                        ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
+                        : status === "rejected"
+                        ? "bg-rose-500/10 text-rose-400 border-rose-500/30"
+                        : "bg-amber-500/10 text-amber-400 border-amber-500/30"
                     }`}>
-                      <ShieldAlert className="size-3.5" />
+                      {status === "approved" ? (
+                        <CheckCircle className="size-3" />
+                      ) : status === "rejected" ? (
+                        <XCircle className="size-3" />
+                      ) : (
+                        <Clock className="size-3" />
+                      )}
                       {item.bookingStatus || "Pending"}
                     </span>
                   </td>
-
                 </tr>
               );
             })}

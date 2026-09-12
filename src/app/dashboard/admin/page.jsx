@@ -8,6 +8,9 @@ import {
   CalendarCheck2,
   DollarSign,
   ShieldAlert,
+  CheckCircle,
+  XCircle,
+  Clock,
 } from "lucide-react";
 
 const AdminDashboard = async () => {
@@ -121,7 +124,7 @@ const AdminDashboard = async () => {
         </div>
 
         {/* Grid 2: Recent Streaming Log Bookings Table */}
-        <div className="backdrop-blur-xl bg-[#0c0c14]/60 border border-white/5 rounded-2xl p-5 md:p-6 shadow-2xl">
+        <div className="w-full bg-slate-950/90 backdrop-blur-md border border-slate-800/80 rounded-2xl p-5 md:p-6 shadow-2xl shadow-cyan-950/20">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/5 pb-4 mb-4 gap-2">
             <div className="flex items-center gap-2.5">
               <div className="relative flex h-2 w-2">
@@ -139,31 +142,31 @@ const AdminDashboard = async () => {
           </div>
 
           {/* Responsive Table Wrapper */}
-          <div className="w-full overflow-x-auto rounded-xl border border-white/[0.03]">
+          <div className="w-full overflow-x-auto rounded-xl border border-slate-800/80 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="bg-[#131424] text-slate-300 border-b border-white/5 font-mono font-bold tracking-wider">
-                  <th className="p-4 uppercase">Property</th>
-                  <th className="p-4 uppercase">Tenant Address</th>
-                  <th className="p-4 uppercase">Move-In Point</th>
-                  <th className="p-4 uppercase">Price Rate</th>
-                  <th className="p-4 text-center uppercase">Payment</th>
-                  <th className="p-4 text-right uppercase">Action Status</th>
+                <tr className="bg-slate-900/90 text-slate-400 border-b border-slate-800 font-mono font-bold tracking-widest">
+                  <th className="p-4 text-[11px] uppercase">Property</th>
+                  <th className="p-4 text-[11px] uppercase">Tenant Address</th>
+                  <th className="p-4 text-[11px] uppercase">Move-In Point</th>
+                  <th className="p-4 text-[11px] uppercase">Price Rate</th>
+                  <th className="p-4 text-[11px] uppercase text-center">Payment</th>
+                  <th className="p-4 text-[11px] uppercase text-right">Action Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/[0.03] bg-[#0c0c14]/20">
+              <tbody className="divide-y divide-slate-800/60 bg-transparent">
                 {recentBookings.length > 0 ? (
                   recentBookings.map((booking) => (
                     <tr
                       key={booking._id?.$oid || booking._id}
-                      className="hover:bg-white/[0.03] bg-white/[0.01] transition-colors"
+                      className="hover:bg-cyan-950/20 transition-all duration-200 group"
                     >
                       {/* FIXED: Property Title Highlighted */}
                       <td className="p-4 max-w-[180px] truncate">
-                        <span className="block font-bold text-sm text-white tracking-wide">
+                        <span className="block font-bold text-sm text-slate-100 tracking-wide group-hover:text-cyan-400 transition-colors">
                           {booking.title}
                         </span>
-                        <span className="block text-[10px] font-medium text-purple-400 font-mono mt-0.5 uppercase">
+                        <span className="block text-[11px] font-medium text-slate-400 font-mono mt-0.5 uppercase">
                           {booking.location}
                         </span>
                       </td>
@@ -172,7 +175,7 @@ const AdminDashboard = async () => {
                         <div className="font-bold text-sm text-slate-100 tracking-wide">
                           {booking.userName}
                         </div>
-                        <div className="text-[10px] text-slate-400 font-mono mt-0.5">
+                        <div className="text-[11px] text-slate-400 font-mono mt-0.5">
                           {booking.userEmail}
                         </div>
                       </td>
@@ -187,26 +190,38 @@ const AdminDashboard = async () => {
                       {/* Payment Badge Status */}
                       <td className="p-4 text-center">
                         <span
-                          className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-bold uppercase font-mono tracking-wider ${
+                          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold uppercase font-mono tracking-wider border whitespace-nowrap ${
                             booking.paymentStatus?.toLowerCase() === "paid"
-                              ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-[0_0_12px_rgba(16,185,129,0.1)]"
-                              : "bg-amber-500/20 text-amber-300 border border-amber-500/40"
+                              ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
+                              : "bg-amber-500/10 text-amber-400 border-amber-500/30"
                           }`}
                         >
+                          {booking.paymentStatus?.toLowerCase() === "paid" ? (
+                            <CheckCircle className="size-3" />
+                          ) : (
+                            <Clock className="size-3" />
+                          )}
                           {booking.paymentStatus || "unpaid"}
                         </span>
                       </td>
                       {/* Booking Status Badge */}
                       <td className="p-4 text-right">
                         <span
-                          className={`inline-block px-2.5 py-1 rounded text-[10px] font-black uppercase tracking-wider ${
-                            booking.bookingStatus === "Approved"
-                              ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
-                              : booking.bookingStatus === "Rejected"
-                                ? "bg-rose-500/20 text-rose-300 border border-rose-500/40 shadow-[0_0_12px_rgba(244,63,94,0.15)]"
-                                : "bg-slate-800 text-slate-300 border border-slate-700"
+                          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-black uppercase tracking-wider border font-mono whitespace-nowrap ${
+                            booking.bookingStatus?.toLowerCase() === "approved"
+                              ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
+                              : booking.bookingStatus?.toLowerCase() === "rejected"
+                                ? "bg-rose-500/10 text-rose-400 border-rose-500/30"
+                                : "bg-amber-500/10 text-amber-400 border-amber-500/30"
                           }`}
                         >
+                          {booking.bookingStatus?.toLowerCase() === "approved" ? (
+                            <CheckCircle className="size-3" />
+                          ) : booking.bookingStatus?.toLowerCase() === "rejected" ? (
+                            <XCircle className="size-3" />
+                          ) : (
+                            <Clock className="size-3" />
+                          )}
                           {booking.bookingStatus || "Pending"}
                         </span>
                       </td>

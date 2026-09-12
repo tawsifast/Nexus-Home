@@ -9,6 +9,8 @@ import {
   Trash2,
   MapPin,
   Clock,
+  CheckCircle,
+  XCircle,
   AlertTriangle,
 } from "lucide-react";
 import toast from "react-hot-toast";
@@ -91,61 +93,60 @@ export default function AdminPropertiesTable({ initialProperties }) {
 
   if (properties.length === 0) {
     return (
-      <div className="bg-[#09090f] border border-white/5 rounded-xl py-16 text-center">
-        <p className="text-sm text-slate-500 font-mono">
-          No properties logged in inventory.
+      <div className="text-center py-16 bg-transparent">
+        <p className="text-sm text-slate-400 font-mono">
+          No properties found.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="bg-[#09090f] border border-white/5 rounded-xl overflow-hidden shadow-2xl w-full max-w-full">
-      {/* 🛠️ স্ট্যান্ডার্ড এইচটিএমএল টেবিল উইথ রেসপন্সিভ র‍্যাপার */}
-      <div className="w-full max-w-full overflow-x-auto">
+    <div className="w-full bg-slate-950/90 backdrop-blur-md border border-slate-800/80 rounded-2xl overflow-hidden shadow-2xl shadow-cyan-950/20 max-w-full">
+      <div className="w-full max-w-full overflow-x-auto scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
         <table className="w-full text-left border-collapse min-w-[1000px]">
           <thead>
-            <tr className="border-b border-white/5 bg-white/[0.01]">
-              <th className="text-slate-400 font-semibold text-xs py-4 px-6">
+            <tr className="border-b border-slate-800 bg-slate-900/90">
+              <th className="py-4 px-6 text-[11px] font-bold tracking-widest text-slate-400 uppercase">
                 Property Info
               </th>
-              <th className="text-slate-400 font-semibold text-xs py-4 px-4">
+              <th className="py-4 px-4 text-[11px] font-bold tracking-widest text-slate-400 uppercase">
                 Specs & Space
               </th>
-              <th className="text-slate-400 font-semibold text-xs py-4 px-4">
+              <th className="py-4 px-4 text-[11px] font-bold tracking-widest text-slate-400 uppercase">
                 Financial Valuation
               </th>
-              <th className="text-slate-400 font-semibold text-xs py-4 px-4">
+              <th className="py-4 px-4 text-[11px] font-bold tracking-widest text-slate-400 uppercase">
                 Ownership Context
               </th>
-              <th className="text-slate-400 font-semibold text-xs py-4 px-4">
+              <th className="py-4 px-4 text-[11px] font-bold tracking-widest text-slate-400 uppercase">
                 Verification State
               </th>
-              <th className="text-slate-400 font-semibold text-xs py-4 px-6 text-right">
+              <th className="py-4 px-6 text-right text-[11px] font-bold tracking-widest text-slate-400 uppercase">
                 Action Nodes
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-slate-800/60 bg-transparent">
             {properties.map((item) => {
               const targetId = item._id?.$oid || item._id;
               return (
                 <tr 
                   key={targetId} 
-                  className="border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors"
+                  className="hover:bg-cyan-950/20 transition-all duration-200 group"
                 >
                   {/* Property Info */}
                   <td className="py-4 px-6 align-middle">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-white/5 rounded-lg text-slate-400 shrink-0">
+                      <div className="p-2 bg-cyan-950/50 text-cyan-400 rounded-lg border border-cyan-500/30 shrink-0">
                         <Home className="size-4" />
                       </div>
-                      <div>
-                        <span className="font-semibold text-slate-200 block text-sm line-clamp-1">
+                      <div className="min-w-0">
+                        <span className="font-bold text-slate-100 tracking-wide text-sm line-clamp-1 block group-hover:text-cyan-400 transition-colors">
                           {item.title}
                         </span>
-                        <span className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
-                          <MapPin className="size-3 text-purple-400" /> {item.location}
+                        <span className="text-[11px] text-slate-400 flex items-center gap-1 mt-0.5">
+                          <MapPin className="size-3 text-cyan-400" /> {item.location}
                         </span>
                       </div>
                     </div>
@@ -153,7 +154,7 @@ export default function AdminPropertiesTable({ initialProperties }) {
 
                   {/* Specs & Space */}
                   <td className="py-4 px-4 align-middle">
-                    <div className="text-xs text-slate-300 font-mono space-y-0.5">
+                    <div className="text-[11px] text-slate-300 font-mono space-y-0.5">
                       <span className="block">
                         {item.propertyType} • {item.rentType}
                       </span>
@@ -165,14 +166,14 @@ export default function AdminPropertiesTable({ initialProperties }) {
 
                   {/* Financial Valuation */}
                   <td className="py-4 px-4 align-middle">
-                    <span className="text-sm font-bold font-mono text-cyan-400">
+                    <span className="text-sm font-black font-mono text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.25)]">
                       ${item.price?.toLocaleString() || item.rentPrice?.toLocaleString()}
                     </span>
                   </td>
 
                   {/* Ownership Context */}
                   <td className="py-4 px-4 align-middle">
-                    <div className="text-xs font-mono text-slate-400 space-y-0.5">
+                    <div className="text-[11px] font-mono text-slate-400 space-y-0.5">
                       <span className="block text-slate-300 line-clamp-1">
                         {item.ownerEmail}
                       </span>
@@ -182,14 +183,21 @@ export default function AdminPropertiesTable({ initialProperties }) {
                   {/* Verification State */}
                   <td className="py-4 px-4 align-middle">
                     <div className="space-y-1">
-                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold font-mono border uppercase tracking-wider ${
+                      <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold font-mono border uppercase tracking-wider whitespace-nowrap ${
                         item.status === "Approved"
-                          ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                          ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
                           : item.status === "Rejected"
-                            ? "bg-rose-500/10 text-rose-400 border-rose-500/20"
-                            : "bg-amber-500/10 text-amber-400 border-amber-500/20"
+                            ? "bg-rose-500/10 text-rose-400 border-rose-500/30"
+                            : "bg-amber-500/10 text-amber-400 border-amber-500/30"
                       }`}>
-                        <Clock className="size-3" /> {item.status || "Pending"}
+                        {item.status === "Approved" ? (
+                          <CheckCircle className="size-3" />
+                        ) : item.status === "Rejected" ? (
+                          <XCircle className="size-3" />
+                        ) : (
+                          <Clock className="size-3" />
+                        )}
+                        {item.status || "Pending"}
                       </span>
                     </div>
                   </td>

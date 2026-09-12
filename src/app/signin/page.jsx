@@ -131,7 +131,7 @@ const SigninPage = () => {
                 placeholder="Enter your password"
                
                 className="w-full bg-[#0d0e16] border border-white/10 rounded-xl text-slate-100 placeholder-slate-600 focus:border-purple-500/50 focus:shadow-[0_0_15px_rgba(168,85,247,0.1)] px-4 py-2.5 pr-11 transition-all text-sm outline-none"
-              />
+                />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}

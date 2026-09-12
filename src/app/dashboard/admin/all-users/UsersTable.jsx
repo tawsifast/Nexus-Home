@@ -55,28 +55,28 @@ export default function UsersTable({ initialUsers }) {
   };
 
   return (
-    <div className="bg-[#09090f] border border-white/5 rounded-xl overflow-hidden shadow-2xl p-6">
+    <div className="w-full bg-slate-950/90 backdrop-blur-md border border-slate-800/80 rounded-2xl overflow-hidden shadow-2xl shadow-cyan-950/20 max-w-full p-6">
 
       {/* 🛠️ স্ট্যান্ডার্ড এইচটিএমএল টেবিল উইথ রেসপন্সিভ স্ক্রোল র‍্যাপার */}
-      <div className="w-full overflow-x-auto">
+      <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
         <table className="w-full text-left border-collapse min-w-[750px]">
           <thead>
-            <tr className="border-b border-white/5 bg-white/[0.01]">
-              <th className="text-slate-400 font-semibold text-xs py-4 px-6">
+            <tr className="border-b border-slate-800 bg-slate-900/90">
+              <th className="py-4 px-6 text-[11px] font-bold tracking-widest text-slate-400 uppercase">
                 Name
               </th>
-              <th className="text-slate-400 font-semibold text-xs py-4 px-4">
+              <th className="py-4 px-4 text-[11px] font-bold tracking-widest text-slate-400 uppercase">
                 Email
               </th>
-              <th className="text-slate-400 font-semibold text-xs py-4 px-4">
+              <th className="py-4 px-4 text-[11px] font-bold tracking-widest text-slate-400 uppercase">
                 Current Status Badge
               </th>
-              <th className="text-slate-400 font-semibold text-xs py-4 px-6 text-right">
+              <th className="py-4 px-6 text-right text-[11px] font-bold tracking-widest text-slate-400 uppercase">
                 Quick Role Action Node
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-slate-800/60 bg-transparent">
             {users.map((user) => {
               const targetId = user._id?.$oid || user._id || user.id;
               const activeRole = user.role || "tenant";
@@ -84,27 +84,27 @@ export default function UsersTable({ initialUsers }) {
               return (
                 <tr
                   key={targetId}
-                  className="border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors"
+                  className="hover:bg-cyan-950/20 transition-all duration-200 group"
                 >
                   {/* Name */}
-                  <td className="py-4 px-6 text-slate-200 font-medium text-sm">
+                  <td className="py-4 px-6 text-slate-100 font-bold text-sm tracking-wide group-hover:text-cyan-400 transition-colors">
                     {user.name || "Unknown User"}
                   </td>
 
                   {/* Email */}
-                  <td className="py-4 px-4 text-slate-400 font-mono text-xs tracking-tight">
+                  <td className="py-4 px-4 text-slate-400 font-mono text-[11px] tracking-tight">
                     {user.email}
                   </td>
 
                   {/* Current Status Badge */}
                   <td className="py-4 px-4">
                     <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider border font-mono whitespace-nowrap ${
                         activeRole.toLowerCase() === "admin"
-                          ? "bg-purple-500/10 text-purple-400 border-purple-500/20"
+                          ? "bg-purple-500/10 text-purple-400 border-purple-500/30"
                           : activeRole.toLowerCase() === "owner"
-                          ? "bg-cyan-500/10 text-cyan-400 border-cyan-500/20"
-                          : "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                          ? "bg-cyan-500/10 text-cyan-400 border-cyan-500/30"
+                          : "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
                       }`}
                     >
                       {activeRole}
