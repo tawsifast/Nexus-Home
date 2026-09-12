@@ -16,10 +16,17 @@ export default function FilterablePropertyGrid({
   approvedProperties = [],
   total = 0,
   currentPage = 1,
+  initialSearch = "",
+  initialType = "",
+  initialOrder = "",
+  initialMinPrice = "",
+  initialMaxPrice = "",
 }) {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedType, setSelectedType] = useState("");
-  const [sortOrder, setSortOrder] = useState("");
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
+  const [selectedType, setSelectedType] = useState(initialType);
+  const [sortOrder, setSortOrder] = useState(initialOrder);
+  const [minPrice, setMinPrice] = useState(initialMinPrice);
+  const [maxPrice, setMaxPrice] = useState(initialMaxPrice);
   const router = useRouter();
   const [page, setPage] = useState(currentPage);
   const ITEMS_PER_PAGE = 6;
@@ -32,29 +39,25 @@ export default function FilterablePropertyGrid({
     router.push(`/all-client/all-properties?${params.toString()}`);
   };
 
-  //   const getPageNumbers = () => {
-  //     const pages = [...Array(totalPages).keys()]
-  //     return pages;
-  //   }
-
-  // const startItem = (page - 1) * itemsPerPage + 1;
-  // const endItem = Math.min(page * itemsPerPage, totalItems);
-
-  const handleApplyFilters = async () => {
+  const handleApplyFilters = () => {
     setPage(1);
     const params = new URLSearchParams();
     if (searchQuery) {
       params.set("search", searchQuery);
     }
-    if (selectedType) {
+    if (selectedType && selectedType !== "all") {
       params.set("type", selectedType);
     }
-    if (sortOrder) {
+    if (sortOrder && sortOrder !== "none") {
       params.set("order", sortOrder);
     }
-    if (page) {
-      params.set("page", page);
+    if (minPrice) {
+      params.set("minPrice", minPrice);
     }
+    if (maxPrice) {
+      params.set("maxPrice", maxPrice);
+    }
+    params.set("page", "1");
     router.push(`/all-client/all-properties?${params.toString()}`);
   };
 
@@ -62,11 +65,13 @@ export default function FilterablePropertyGrid({
     setSearchQuery("");
     setSelectedType("");
     setSortOrder("");
+    setMinPrice("");
+    setMaxPrice("");
     setPage(1);
     router.push("/all-client/all-properties");
   };
 
-  const displayProperties = approvedProperties
+  const displayProperties = approvedProperties;
 
   return (
     <div className="space-y-8">
@@ -210,6 +215,36 @@ export default function FilterablePropertyGrid({
                 </ListBox>
               </Select.Popover>
             </Select>
+          </div>
+
+          {/* Price Range Inputs */}
+          <div className="w-full sm:w-[230px] flex gap-2">
+            <div className="flex-1 flex flex-col gap-1.5">
+              <Label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                Min $
+              </Label>
+              <input
+                type="number"
+                value={minPrice}
+                onChange={(e) => setMinPrice(e.target.value)}
+                placeholder="Min"
+                min="0"
+                className="w-full h-11 bg-white/2 hover:bg-white/4 border border-white/5 rounded-xl px-3 text-sm text-slate-200 outline-none placeholder:text-slate-600 transition-all focus:border-cyan-500/50 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+              />
+            </div>
+            <div className="flex-1 flex flex-col gap-1.5">
+              <Label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                Max $
+              </Label>
+              <input
+                type="number"
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(e.target.value)}
+                placeholder="Max"
+                min="0"
+                className="w-full h-11 bg-white/2 hover:bg-white/4 border border-white/5 rounded-xl px-3 text-sm text-slate-200 outline-none placeholder:text-slate-600 transition-all focus:border-cyan-500/50 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+              />
+            </div>
           </div>
 
           {/* Action Apply Button */}

@@ -45,7 +45,7 @@ export default async function HomeReviews() {
 
                 {/* Comment Paragraph */}
                 <p className="text-xs text-slate-400 font-light leading-relaxed italic line-clamp-4">
-                  "{review.comment}"
+                  &ldquo;{review.comment}&rdquo;
                 </p>
               </div>
 

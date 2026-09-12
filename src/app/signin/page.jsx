@@ -97,7 +97,6 @@ const SigninPage = () => {
             name="email"
             type="email"
             className="w-full space-y-1.5"
-            defaultValue={"mitsuha@gmail.com"}
             validate={(value) => {
               if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
                 return "Please enter a valid email address";
@@ -121,7 +120,6 @@ const SigninPage = () => {
             isRequired
             name="password"
             type={showPassword ? "text" : "password"}
-             defaultValue={"Mitsuha12345"} 
             className="w-full space-y-1.5"
           >
             <Label className="text-xs font-bold text-slate-400 uppercase tracking-wider block">

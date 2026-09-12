@@ -65,7 +65,7 @@ export default function CustomerReviews() {
                   ))}
                 </div>
                 <p className="text-slate-300 text-sm font-light italic leading-relaxed">
-                  "{review.comment}"
+                  &ldquo;{review.comment}&rdquo;
                 </p>
               </div>
 

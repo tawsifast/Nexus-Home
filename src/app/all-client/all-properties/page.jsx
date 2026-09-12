@@ -4,10 +4,11 @@ import { getProperty } from "@/lib/api/property";
 
 export default async function AllPropertyPage({ searchParams }) {
   const sParams = await searchParams;
-  console.log(sParams, "sparams");
   const search = sParams.search || "";
   const type = sParams.type || "";
   const order = sParams.order || "";
+  const minPrice = sParams.minPrice || "";
+  const maxPrice = sParams.maxPrice || "";
   const params = new URLSearchParams();
   const page = sParams.page || "1";
   if (search) {
@@ -19,11 +20,16 @@ export default async function AllPropertyPage({ searchParams }) {
   if (order) {
     params.set("order", order);
   }
+  if (minPrice) {
+    params.set("minPrice", minPrice);
+  }
+  if (maxPrice) {
+    params.set("maxPrice", maxPrice);
+  }
   params.set("page", page); 
   const data = await getProperty(params);
   const items = data?.items || [];
   const total = data?.total || 0;
-  const approvedItems = items.filter((p) => p.status === "Approved");
 
   return (
     <main className="min-h-screen bg-[#0a0a0f] text-slate-100 pt-28 pb-20 px-4 md:px-8 relative overflow-hidden">
@@ -50,9 +56,14 @@ export default async function AllPropertyPage({ searchParams }) {
 
         {/* Handing over raw structural approved data down to the Interactive Layer */}
         <FilterablePropertyGrid
-          approvedProperties={approvedItems}
+          approvedProperties={items}
           total={total}
           currentPage={parseInt(page)}
+          initialSearch={search}
+          initialType={type}
+          initialOrder={order}
+          initialMinPrice={minPrice}
+          initialMaxPrice={maxPrice}
         />
       </div>
     </main>

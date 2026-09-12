@@ -36,9 +36,9 @@ export default function TransactionsTable({ transactions = [] }) {
               </tr>
             </thead>
             <tbody>
-              {transactions.map((tx) => {
+              {transactions.map((tx, index) => {
                 // Standardize ID string safely for React array key mapping
-                const rowId = tx._id?.$oid || tx._id || Math.random().toString();
+                const rowId = tx._id?.$oid || tx._id || `tx-${index}`;
 
                 return (
                   <tr 

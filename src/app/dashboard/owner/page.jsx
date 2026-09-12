@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
 
-export default function TenantPage() {
+export default function OwnerRedirectPage() {
   redirect("/dashboard/owner/overview");
 }

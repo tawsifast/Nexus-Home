@@ -137,7 +137,7 @@ export default function AdminBookingTable({ initialBookings }) {
                   {/* Escrow Payment Status Badge */}
                   <td className="py-4 px-4 align-middle whitespace-nowrap">
                     <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold font-mono border uppercase tracking-wider whitespace-nowrap ${
-                      item.paymentStatus === "paid"
+                      item.paymentStatus?.toLowerCase() === "paid"
                         ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
                         : "bg-rose-500/10 text-rose-400 border-rose-500/20"
                     }`}>

@@ -15,8 +15,8 @@ import { auth } from "../auth";
 //   return users;
 // };
 
-import { serverFetch } from "../core/server";
+import { protectedFetch } from "../core/server";
 
 export const getAllUserList = async () => {
-  return serverFetch("/users");
+  return protectedFetch("/users");
 };

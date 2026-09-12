@@ -44,7 +44,7 @@ export default async function BlogPostDetailPage({ params }) {
         
         {/* 🛠️ ফিক্সড ব্যাক বাটন: এখানে /blog এর জায়গায় /blogs করা হয়েছে */}
         <Link 
-          href="/blogs" 
+          href="/all-client/blogs" 
           className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-cyan-400 transition-colors group"
         >
           <ArrowLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" /> 

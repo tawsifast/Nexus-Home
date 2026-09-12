@@ -15,7 +15,8 @@ const AdminDashboard = async () => {
   const allBookings = (await getAllBookings()) || [];
   const properties = (await getAllProperty()) || [];
   const userData = await getAllUserList();
-  const users = userData?.users || [];
+  // Backend GET /users returns a plain array
+  const users = Array.isArray(userData) ? userData : userData?.users || [];
 
   // ১. স্ট্যাটিস্টিক্স হিসাব-নিকাশ
   const totalRevenue = allBookings

@@ -15,7 +15,8 @@ import {
 import { Modal, Button, TextField, Label, Input } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { addFavorite } from "@/lib/actions/favourite";
-import { createBooking, createStripeSession } from "@/lib/api/booking";
+import { createBooking } from "@/lib/actions/booking";
+import { createStripeSession } from "@/lib/api/booking";
 import toast from "react-hot-toast";
 
 export default function PropertyActionBlock({ property, user }) {

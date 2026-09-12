@@ -76,10 +76,10 @@ export function DashboardSidebar({ currentRole = "tenant" }) {
           />
 
           {/* Drawer Panel */}
-          <div className="lg:hidden fixed top-0 left-0 h-full w-[280px] z-50 bg-[#0a0a0f] border-r border-white/5 flex flex-col shadow-2xl transition-transform duration-300">
+          <div className="lg:hidden fixed top-0 left-0 h-full w-70 z-50 bg-[#0a0a0f] border-r border-white/5 flex flex-col shadow-2xl transition-transform duration-300">
             {/* Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-white/5">
-              <span className="text-sm font-bold uppercase tracking-widest bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+              <span className="text-sm font-bold uppercase tracking-widest bg-linear-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
                 Navigation
               </span>
               <button

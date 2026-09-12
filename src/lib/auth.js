@@ -33,6 +33,18 @@ export const auth = betterAuth({
       },
     },
   },
+  databaseHooks: {
+    user: {
+      create: {
+        before: async (user) => {
+          const role = ["tenant", "owner"].includes(user.role)
+            ? user.role
+            : "tenant";
+          return { data: { ...user, role } };
+        },
+      },
+    },
+  },
   advanced: {
     disableCSRFCheck: true,
   },

@@ -1,6 +1,6 @@
-import { protectedFetch, serverFetch } from "../core/server"
+import { protectedFetch } from "../core/server"
 
 
-export const getAllTransactions = async (transactionData) =>{
-    return serverFetch("/transactions", transactionData)
+export const getAllTransactions = async () =>{
+    return protectedFetch("/transactions")
 }

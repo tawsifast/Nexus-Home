@@ -10,13 +10,13 @@ export default function NotFound() {
       <div className="absolute bottom-1/3 right-1/3 w-96 h-96 bg-cyan-500/15 rounded-full blur-[140px] pointer-events-none" />
 
       {/* Grid Pattern Overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size-32px_32px] pointer-events-none" />
 
       {/* Centerpiece Content */}
       <div className="max-w-md w-full relative z-10 text-center space-y-6">
         <div className="space-y-2">
           {/* Neon Gradient Badge */}
-          <h1 className="text-8xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-slate-200 to-cyan-400 tracking-tighter">
+          <h1 className="text-8xl font-extrabold bg-clip-text text-transparent bg-linear-to-r from-purple-500 via-slate-200 to-cyan-400 tracking-tighter">
             404
           </h1>
           <h3 className="text-xl font-bold text-slate-200 tracking-wide">
@@ -31,7 +31,7 @@ export default function NotFound() {
         <div className="pt-2">
           <Link
             href="/all-client/all-properties"
-            className="inline-flex h-11 px-6 rounded-xl bg-gradient-to-r from-purple-600 to-cyan-500 hover:from-purple-500 hover:to-cyan-400 text-white font-medium text-sm items-center justify-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.25)] hover:shadow-[0_0_25px_rgba(6,182,212,0.5)] border border-cyan-400/20 transition-all active:scale-[0.98]"
+            className="inline-flex h-11 px-6 rounded-xl bg-linear-to-r from-purple-600 to-cyan-500 hover:from-purple-500 hover:to-cyan-400 text-white font-medium text-sm items-center justify-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.25)] hover:shadow-[0_0_25px_rgba(6,182,212,0.5)] border border-cyan-400/20 transition-all active:scale-[0.98]"
           >
             <ArrowLeft className="size-4" />
             <span>Return to Properties</span>

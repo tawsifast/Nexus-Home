@@ -16,7 +16,7 @@ const FetchOwnerAnalyticsData = async () => {
 
   // ২. কার্ডের সাধারণ হিসাবসমূহ
   const totalEarnings = bookingList
-    .filter((booking) => booking.paymentStatus === "paid")
+    .filter((booking) => booking.paymentStatus?.toLowerCase() === "paid")
     .reduce((sum, booking) => sum + (Number(booking.price) || 0), 0);
 
   const totalProperties = properties.length;
@@ -51,7 +51,7 @@ const FetchOwnerAnalyticsData = async () => {
 
   // ৪. সফল বুকিং পেমেন্টগুলো নির্দিষ্ট মাসের বক্সে যোগ করা
   bookingList.forEach((booking) => {
-    if (booking.paymentStatus === "paid" && booking.bookedAt) {
+    if (booking.paymentStatus?.toLowerCase() === "paid" && booking.bookedAt) {
       const bookingDate = new Date(booking.bookedAt);
       const bookingKey = `${bookingDate.getFullYear()}-${String(bookingDate.getMonth() + 1).padStart(2, '0')}`;
       

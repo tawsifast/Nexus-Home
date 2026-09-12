@@ -31,6 +31,11 @@ export default async function PropertyDetailsPage({ params }) {
     );
   }
 
+  // 🚨 Non-Approved properties must never be visible on the public detail page
+  if (property.status !== "Approved") {
+    redirect("/all-client/all-properties");
+  }
+
   // যদি আপনার প্রোপার্টি অবজেক্টে আগে থেকে কোনো রিভিউ এপিআই ডেটা থাকে, তা পাস করুন
 
   return (

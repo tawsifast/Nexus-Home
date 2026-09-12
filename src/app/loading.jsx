@@ -7,7 +7,7 @@ export default function Loading() {
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none" />
 
       {/* Grid Pattern Overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size-32px_32px] pointer-events-none" />
 
       <div className="max-w-7xl w-full mx-auto relative z-10 space-y-8 animate-pulse">
         {/* Header Block Skeleton */}
@@ -22,7 +22,7 @@ export default function Loading() {
         {/* Card Mock Grid Skeleton */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-4">
           {[1, 2, 3, 4, 5, 6].map((index) => (
-            <div key={index} className="backdrop-blur-xl bg-white/2 border border-white/5 rounded-2xl overflow-hidden h-[380px] space-y-4 p-4 flex flex-col justify-between">
+            <div key={index} className="backdrop-blur-xl bg-white/2 border border-white/5 rounded-2xl overflow-hidden h-95 space-y-4 p-4 flex flex-col justify-between">
               <div className="w-full h-48 bg-white/5 rounded-xl" />
               <div className="space-y-2 flex-1 pt-2">
                 <div className="h-5 w-3/4 bg-white/10 rounded-md" />

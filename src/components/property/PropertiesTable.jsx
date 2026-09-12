@@ -14,8 +14,7 @@ import {
 } from "@heroui/react";
 import { Edit2, Trash2, Home, Eye, AlertCircle } from "lucide-react";
 import toast from "react-hot-toast";
-import { updatedProperty } from "@/lib/actions/property";
-import { deleteOwnerBooking } from "@/lib/actions/ownerBooking";
+import { updatedProperty, deleteProperty } from "@/lib/actions/property";
 
 export default function PropertiesTable({ properties: initialProperties }) {
   const [properties, setProperties] = useState(initialProperties || []);
@@ -30,7 +29,7 @@ export default function PropertiesTable({ properties: initialProperties }) {
 
   const handleDelete = async (id) => {
     try {
-      await deleteOwnerBooking(id);
+      await deleteProperty(id);
       setProperties(properties.filter((item) => getItemId(item) !== id));
       toast.success("Property deleted successfully!");
     } catch (error) {

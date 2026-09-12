@@ -1,7 +1,6 @@
+"use server";
 
-
-import { protectedFetch, serverFetch } from "../core/server";
-
+import { protectedFetch, authHeader } from "../core/server";
 
 export const getFavouriteProperty = async(email) =>{
     return protectedFetch(`/favourites/${email}`)
@@ -12,6 +11,7 @@ export const deleteFavourite = async(id) =>{
         method: "DELETE",
         headers: {
             "Content-type":"application/json",
+            ...(await authHeader()),
         },
     })
     return res.json();

@@ -1,17 +1,19 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Trash2, MapPin, Bed, Bath, DollarSign, Building } from "lucide-react";
+import { Trash2, MapPin, Bed, Bath, Building } from "lucide-react";
 import toast from "react-hot-toast";
 import { deleteFavourite } from '@/lib/api/favourite';
 
 const FavouriteTable = ({ initialFavorites }) => {
   const [favorites, setFavorites] = useState(initialFavorites || []);
 
+  const idFor = (item) => item._id?.["$oid"] || item._id || item.id;
+
   const handleRemoveFavorite = async (id, title) => {
     try {
       await deleteFavourite(id);
-      setFavorites(prev => prev.filter(item => item._id !== id && item.id !== id));
+      setFavorites(prev => prev.filter(item => idFor(item) !== id));
       toast.success(`Removed "${title}" from favorites`);
     } catch (error) {
       toast.error("Failed to remove item");
@@ -19,84 +21,81 @@ const FavouriteTable = ({ initialFavorites }) => {
   };
 
   return (
-    <div className="w-full bg-transparent border border-white/[0.08] rounded-xl overflow-hidden">
+    <div className="w-full bg-slate-950/90 backdrop-blur-md border border-slate-800/80 rounded-2xl overflow-hidden shadow-2xl shadow-cyan-950/20 max-w-full">
       {favorites.length === 0 ? (
         <div className="text-center py-16 bg-transparent">
           <p className="text-sm text-slate-400 font-mono">No favorite properties found.</p>
         </div>
       ) : (
         /* Smooth Responsive Scroll Wrapper */
-        <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-white/[0.08]">
-          <table className="w-full min-w-[800px] text-left border-collapse">
+        <div className="w-full max-w-full overflow-x-auto scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
+          <table className="w-full min-w-[850px] text-left border-collapse">
             
-            {/* Seamless Lightened Header */}
+            {/* Slate Header */}
             <thead>
-              <tr className="border-b border-white/[0.08] bg-white/[0.03]">
-                <th className="py-4 px-6 text-xs font-semibold tracking-wider text-slate-300 uppercase">Property</th>
-                <th className="py-4 px-4 text-xs font-semibold tracking-wider text-slate-300 uppercase">Type</th>
-                <th className="py-4 px-4 text-xs font-semibold tracking-wider text-slate-300 uppercase">Location</th>
-                <th className="py-4 px-4 text-xs font-semibold tracking-wider text-slate-300 uppercase">Specs</th>
-                <th className="py-4 px-4 text-xs font-semibold tracking-wider text-slate-300 uppercase">Rent Price</th>
-                <th className="py-4 px-6 text-xs font-semibold tracking-wider text-slate-300 uppercase text-right">Actions</th>
+              <tr className="border-b border-slate-800 bg-slate-900/90">
+                <th className="py-4 px-6 text-[11px] font-bold tracking-widest text-slate-400 uppercase">Property</th>
+                <th className="py-4 px-4 text-[11px] font-bold tracking-widest text-slate-400 uppercase">Type</th>
+                <th className="py-4 px-4 text-[11px] font-bold tracking-widest text-slate-400 uppercase">Location</th>
+                <th className="py-4 px-4 text-[11px] font-bold tracking-widest text-slate-400 uppercase">Specs</th>
+                <th className="py-4 px-4 text-[11px] font-bold tracking-widest text-slate-400 uppercase">Rent Price</th>
+                <th className="py-4 px-6 text-[11px] font-bold tracking-widest text-slate-400 uppercase text-right">Actions</th>
               </tr>
             </thead>
 
-            {/* High Contrast Blended Rows */}
-            <tbody className="divide-y divide-white/[0.06] bg-transparent">
-              {favorites.map((item) => (
+            {/* Obsidian Glass Rows */}
+            <tbody className="divide-y divide-slate-800/60 bg-transparent">
+              {favorites.map((item, index) => (
                 <tr 
-                  key={item._id || item.id} 
-                  className="hover:bg-white/[0.04] transition-colors duration-150"
+                  key={item._id?.["$oid"] || item._id || item.id || `favourite-${index}`} 
+                  className="hover:bg-cyan-950/20 transition-all duration-200 group"
                 >
                   
                   {/* Title Cell */}
-                  <td className="py-4 px-6">
-                    <span className="font-bold text-white tracking-wide text-sm block">
+                  <td className="py-4 px-6 align-middle">
+                    <span className="font-bold text-slate-100 tracking-wide text-sm block truncate group-hover:text-cyan-400 transition-colors">
                       {item.title}
                     </span>
                   </td>
 
-                  {/* Type Cell */}
-                  <td className="py-4 px-4">
-                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300 bg-white/[0.06] px-2.5 py-0.5 rounded border border-white/[0.08] uppercase tracking-wider">
-                      <Building className="size-3 text-slate-400" />
+                  {/* Type Badge */}
+                  <td className="py-4 px-4 align-middle">
+                    <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-cyan-300 bg-cyan-950/40 px-2.5 py-1 rounded-md border border-cyan-500/30 uppercase tracking-wider whitespace-nowrap">
+                      <Building className="size-3 text-cyan-400" />
                       {item.type}
                     </span>
                   </td>
 
                   {/* Location Cell */}
-                  <td className="py-4 px-4 text-sm text-slate-200">
-                    <div className="flex items-center gap-1.5">
-                      <MapPin className="size-4 text-slate-400 shrink-0" />
-                      <span>{item.location}</span>
+                  <td className="py-4 px-4 align-middle text-sm text-slate-300">
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <MapPin className="size-3.5 text-cyan-400 shrink-0" />
+                      <span className="truncate">{item.location}</span>
                     </div>
                   </td>
 
                   {/* Specs Cell */}
-                  <td className="py-4 px-4">
+                  <td className="py-4 px-4 align-middle whitespace-nowrap">
                     <div className="flex items-center gap-3 text-xs font-mono text-slate-300">
                       <span className="flex items-center gap-1">
-                        <Bed className="size-4 text-slate-400" /> {item.bedroom} Bed
+                        <Bed className="size-3.5 text-cyan-400" /> {item.bedroom} Bed
                       </span>
                       <span className="flex items-center gap-1">
-                        <Bath className="size-4 text-slate-400" /> {item.bathroom} Bath
+                        <Bath className="size-3.5 text-cyan-400" /> {item.bathroom} Bath
                       </span>
                     </div>
                   </td>
 
-                  {/* Pricing - Glowing Cyan */}
-                  <td className="py-4 px-4 text-sm font-extrabold font-mono text-cyan-400 drop-shadow-[0_0_6px_rgba(34,211,238,0.2)]">
-                    <div className="flex items-center">
-                      <DollarSign className="size-4 shrink-0" />
-                      <span>{item.rentPrice?.toLocaleString()}/mo</span>
-                    </div>
+                  {/* Rent Price */}
+                  <td className="py-4 px-4 align-middle whitespace-nowrap text-sm font-black font-mono text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.25)]">
+                    ${item.rentPrice?.toLocaleString()}<span className="text-xs text-slate-400 font-normal">/mo</span>
                   </td>
 
-                  {/* Remove Button Action */}
-                  <td className="py-4 px-6 text-right">
+                  {/* Action Button */}
+                  <td className="py-4 px-6 align-middle text-right whitespace-nowrap">
                     <button
-                      onClick={() => handleRemoveFavorite(item._id || item.id, item.title)}
-                      className="inline-flex items-center gap-1.5 bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 border border-rose-500/30 hover:border-rose-500/50 px-3 py-1.5 rounded-md text-xs font-bold uppercase tracking-wider transition-all duration-150 cursor-pointer shadow-[0_0_10px_rgba(244,63,94,0.05)]"
+                      onClick={() => handleRemoveFavorite(item._id?.["$oid"] || item._id || item.id, item.title)}
+                      className="inline-flex items-center gap-1.5 bg-rose-950/30 hover:bg-rose-600 text-rose-400 hover:text-white border border-rose-800/40 hover:border-rose-500 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer shadow-sm"
                     >
                       <Trash2 className="size-3.5" />
                       Remove
