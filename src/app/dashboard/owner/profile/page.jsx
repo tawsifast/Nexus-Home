@@ -1,5 +1,6 @@
 import { getUserSession } from "@/lib/core/session";
 import React from "react";
+import Image from "next/image";
 import {
   User,
   ShieldCheck,
@@ -51,9 +52,11 @@ const OwnerProfilePage = async () => {
               <div className="p-0.5 rounded-xl bg-gradient-to-br from-purple-500/30 to-cyan-500/30 border border-white/10 shadow-[0_0_20px_rgba(168,85,247,0.15)] backdrop-blur-sm shrink-0">
                 <div className="size-24 rounded-lg bg-[#0a0a0f] overflow-hidden flex items-center justify-center border border-white/5">
                   {profileData.avatar ? (
-                    <img
-                      src={profileData.avatar}
+                    <Image
+                      src={profileData.avatar.startsWith("//") ? `https:${profileData.avatar}` : profileData.avatar}
                       alt={profileData.name}
+                      width={96}
+                      height={96}
                       className="w-full h-full object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-300"
                     />
                   ) : (

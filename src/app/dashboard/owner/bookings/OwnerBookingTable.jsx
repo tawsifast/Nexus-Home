@@ -69,8 +69,8 @@ const OwnerBookingTable = ({ initialBookings }) => {
                     item.bookingStatus === "Approved"
                       ? "bg-emerald-500"
                       : item.bookingStatus === "Rejected"
-                      ? "bg-rose-500"
-                      : "bg-amber-500"
+                        ? "bg-rose-500"
+                        : "bg-amber-500"
                   }`}
                 />
 
@@ -111,18 +111,27 @@ const OwnerBookingTable = ({ initialBookings }) => {
                     </div>
                     <div className="flex items-center gap-2 text-slate-400 text-xs">
                       <Mail className="size-3.5 text-slate-500 shrink-0" />
-                      <span className="font-mono truncate">{item.userEmail}</span>
+                      <span className="font-mono truncate">
+                        {item.userEmail}
+                      </span>
                     </div>
                     <div className="flex items-center gap-2 text-slate-300 text-xs">
                       <Calendar className="size-3.5 text-slate-400 shrink-0" />
-                      <span>Move-in: <strong className="font-mono text-slate-200">{item.moveInDate}</strong></span>
+                      <span>
+                        Move-in:{" "}
+                        <strong className="font-mono text-slate-200">
+                          {item.moveInDate}
+                        </strong>
+                      </span>
                     </div>
 
                     {/* Notes if available */}
                     {item.additionalNotes && (
                       <div className="flex items-start gap-2 text-xs bg-slate-950/40 p-2.5 rounded-xl border border-slate-800/60 text-slate-400 mt-3">
                         <FileText className="size-3.5 text-slate-500 shrink-0 mt-0.5" />
-                        <p className="italic line-clamp-2">"{item.additionalNotes}"</p>
+                        <p className="italic line-clamp-2">
+                          {item.additionalNotes}
+                        </p>
                       </div>
                     )}
                   </div>
@@ -137,8 +146,8 @@ const OwnerBookingTable = ({ initialBookings }) => {
                         item.bookingStatus === "Approved"
                           ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
                           : item.bookingStatus === "Rejected"
-                          ? "bg-rose-500/10 text-rose-400 border-rose-500/20"
-                          : "bg-amber-500/10 text-amber-400 border-amber-500/20"
+                            ? "bg-rose-500/10 text-rose-400 border-rose-500/20"
+                            : "bg-amber-500/10 text-amber-400 border-amber-500/20"
                       }`}
                     >
                       <Clock className="size-3" />
@@ -165,7 +174,9 @@ const OwnerBookingTable = ({ initialBookings }) => {
                           isIconOnly
                           size="sm"
                           isDisabled={isProcessing}
-                          onPress={() => handleStatusUpdate(item._id, "Approved")}
+                          onPress={() =>
+                            handleStatusUpdate(item._id, "Approved")
+                          }
                           className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20 rounded-xl size-8 min-w-0"
                           title="Approve"
                         >
@@ -179,7 +190,9 @@ const OwnerBookingTable = ({ initialBookings }) => {
                           isIconOnly
                           size="sm"
                           isDisabled={isProcessing}
-                          onPress={() => handleStatusUpdate(item._id, "Rejected")}
+                          onPress={() =>
+                            handleStatusUpdate(item._id, "Rejected")
+                          }
                           className="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 rounded-xl size-8 min-w-0"
                           title="Reject"
                         >

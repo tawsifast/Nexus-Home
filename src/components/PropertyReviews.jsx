@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@heroui/react";
 import { getPropertyReviews } from "@/lib/api/review";
 import { createReview } from "@/lib/actions/review";
+import Image from "next/image";
 import { Star, MessageSquare, Calendar, User, ShieldAlert } from "lucide-react";
 
 export default function PropertyReviews({
@@ -85,7 +86,13 @@ export default function PropertyReviews({
                 <div className="flex justify-between items-start gap-4">
                   <div className="flex items-center gap-3">
                     {review.userImage ? (
-                      <img src={review.userImage} alt={review.userName} className="size-9 rounded-full object-cover border border-purple-500/30" />
+                      <Image
+                        src={review.userImage.startsWith("//") ? `https:${review.userImage}` : review.userImage}
+                        alt={review.userName}
+                        width={36}
+                        height={36}
+                        className="size-9 rounded-full object-cover border border-purple-500/30"
+                      />
                     ) : (
                       <div className="size-9 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
                         <User size={16} />

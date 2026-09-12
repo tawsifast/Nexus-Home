@@ -1,5 +1,6 @@
 
 import { getHomeReviews } from "@/lib/api/review";
+import Image from "next/image";
 import { Star, Quote, User } from "lucide-react";
 
 export default async function HomeReviews() {
@@ -52,9 +53,11 @@ export default async function HomeReviews() {
               {/* User Meta Data Row */}
               <div className="flex items-center gap-2.5 pt-4 mt-4 border-t border-white/[0.04]">
                 {review.userImage ? (
-                  <img
-                    src={review.userImage}
+                  <Image
+                    src={review.userImage.startsWith("//") ? `https:${review.userImage}` : review.userImage}
                     alt={review.userName}
+                    width={32}
+                    height={32}
                     className="size-8 rounded-full object-cover border border-purple-500/20"
                   />
                 ) : (

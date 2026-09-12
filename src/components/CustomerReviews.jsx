@@ -1,4 +1,5 @@
-import { Star } from "lucide-react";
+import { Star, User } from "lucide-react";
+import Image from "next/image";
 
 export default function CustomerReviews() {
   const reviews = [
@@ -71,11 +72,19 @@ export default function CustomerReviews() {
 
               {/* User Info Alignment */}
               <div className="flex items-center gap-3 pt-4 border-t border-white/[0.05]">
-                <img 
-                  src={review.img} 
-                  alt={review.name} 
-                  className="w-10 h-10 rounded-full object-cover ring-1 ring-purple-500/50"
-                />
+                {review.img ? (
+                  <Image
+                    src={review.img.startsWith("//") ? `https:${review.img}` : review.img}
+                    alt={review.name}
+                    width={40}
+                    height={40}
+                    className="w-10 h-10 rounded-full object-cover ring-1 ring-purple-500/50"
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-slate-800/80 border border-white/5 flex items-center justify-center text-slate-400">
+                    <User size={16} />
+                  </div>
+                )}
                 <div>
                   <h4 className="text-sm font-semibold text-white">{review.name}</h4>
                   <p className="text-xs text-slate-500">{review.role}</p>

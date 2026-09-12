@@ -5,6 +5,7 @@ import { getPropertyById } from "@/lib/api/property";
 import { getPropertyReviews } from "@/lib/api/review";
 import { getUserSession } from "@/lib/core/session";
 import { MapPin, ArrowLeft, ShieldCheck, Sparkles, Building } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -76,10 +77,13 @@ export default async function PropertyDetailsPage({ params }) {
             
             {/* Cinematic Image Showcase */}
             <div className="relative rounded-3xl overflow-hidden h-[300px] md:h-[500px] border border-white/[0.08] shadow-[0_20px_50px_rgba(0,0,0,0.3)] group bg-slate-900">
-              <img 
-                src={property.images || "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=600&auto=format&fit=crop"} 
-                alt={property.title} 
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-102"
+              <Image
+                src={property.images?.startsWith("//") ? `https:${property.images}` : (property.images || "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=600&auto=format&fit=crop")}
+                alt={property.title || "Property Image"}
+                fill
+                priority
+                sizes="(min-width: 1024px) 66vw, 100vw"
+                className="object-cover transition-transform duration-1000 group-hover:scale-102"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d111a] via-transparent to-transparent opacity-50" />
               <div className="absolute bottom-6 left-6 backdrop-blur-md bg-black/40 border border-white/10 px-4 py-1.5 rounded-xl text-xs font-semibold text-cyan-400 tracking-widest uppercase">
